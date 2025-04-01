@@ -1,0 +1,34 @@
+[gd_scene load_steps=9 format=3 uid="uid://b0fy4doifqk7s"]
+
+[ext_resource type="PackedScene" uid="uid://dd5r65nviv8nj" path="res://Components/Player/player.tscn" id="1_lenhx"]
+[ext_resource type="Resource" uid="uid://b3toa2xgpms0d" path="res://Components/Player/Resources/platformer_body.tres" id="2_mf2of"]
+[ext_resource type="Script" path="res://Components/Player/behavior_character.gd" id="2_qyp5h"]
+[ext_resource type="Script" path="res://Components/Player/Resources/behavior_resource.gd" id="3_s4iir"]
+[ext_resource type="Resource" uid="uid://dt0svdk2vfnfe" path="res://Components/Player/Resources/platformer_walking.tres" id="4_o4ohe"]
+[ext_resource type="Resource" uid="uid://bol8nbc0qs1dd" path="res://Components/Player/Resources/platformer_jumping.tres" id="5_jihby"]
+[ext_resource type="Texture2D" uid="uid://cffbs0ucgyc35" path="res://icon.svg" id="6_uo6ph"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_np2vo"]
+size = Vector2(1102, 169)
+
+[node name="Game" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("1_lenhx")]
+position = Vector2(-287, -238)
+script = ExtResource("2_qyp5h")
+behaviors = Array[ExtResource("3_s4iir")]([ExtResource("2_mf2of"), ExtResource("4_o4ohe"), ExtResource("5_jihby")])
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.3, 0.3)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(-551, 291)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(541, 74.5)
+shape = SubResource("RectangleShape2D_np2vo")
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D"]
+position = Vector2(544, 79.5)
+scale = Vector2(8.54688, 1.30469)
+texture = ExtResource("6_uo6ph")

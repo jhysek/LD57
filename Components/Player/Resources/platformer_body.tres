@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="PlatformerBody" load_steps=2 format=3 uid="uid://b3toa2xgpms0d"]
+
+[ext_resource type="Script" path="res://Components/Player/Resources/platformer_body.gd" id="1_1ae80"]
+
+[resource]
+resource_name = "body"
+script = ExtResource("1_1ae80")
+GRAVITY = 8000
+enabled = true

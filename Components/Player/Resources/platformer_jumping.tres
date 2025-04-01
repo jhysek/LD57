@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="PlatformerJumping" load_steps=2 format=3 uid="uid://bol8nbc0qs1dd"]
+
+[ext_resource type="Script" path="res://Components/Player/Resources/platformer_jumping.gd" id="1_c3l4s"]
+
+[resource]
+resource_name = "jump"
+script = ExtResource("1_c3l4s")
+SPEED = 2500
+FLAP_SPEED = 6
+COYOTE_TIME = 0
+DOUBLE_JUMP = true
+FLAPPY_BIRD = false
+enabled = true

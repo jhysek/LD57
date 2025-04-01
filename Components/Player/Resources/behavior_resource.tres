@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="BehaviorResource" load_steps=2 format=3 uid="uid://iky4icqt5xaf"]
+
+[ext_resource type="Script" path="res://Components/Player/Resources/behavior_resource.gd" id="1_qlvdg"]
+
+[resource]
+resource_name = "behavior"
+script = ExtResource("1_qlvdg")

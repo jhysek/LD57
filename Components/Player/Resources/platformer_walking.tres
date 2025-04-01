@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="PlatformerWalking" load_steps=2 format=3 uid="uid://dt0svdk2vfnfe"]
+
+[ext_resource type="Script" path="res://Components/Player/Resources/platformer_walking.gd" id="1_kflm0"]
+
+[resource]
+resource_name = "walk"
+script = ExtResource("1_kflm0")
+SPEED = 50000
+enabled = true
