@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://b0fy4doifqk7s"]
+[gd_scene load_steps=10 format=3 uid="uid://b0fy4doifqk7s"]
 
 [ext_resource type="PackedScene" uid="uid://dd5r65nviv8nj" path="res://Components/Player/player.tscn" id="1_lenhx"]
 [ext_resource type="Resource" uid="uid://b3toa2xgpms0d" path="res://Components/Player/Resources/platformer_body.tres" id="2_mf2of"]
@@ -7,6 +7,7 @@
 [ext_resource type="Resource" uid="uid://dt0svdk2vfnfe" path="res://Components/Player/Resources/platformer_walking.tres" id="4_o4ohe"]
 [ext_resource type="Resource" uid="uid://bol8nbc0qs1dd" path="res://Components/Player/Resources/platformer_jumping.tres" id="5_jihby"]
 [ext_resource type="Texture2D" uid="uid://cffbs0ucgyc35" path="res://icon.svg" id="6_uo6ph"]
+[ext_resource type="PackedScene" uid="uid://t8m27nso7117" path="res://Components/World/world.tscn" id="8_jucqt"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_np2vo"]
 size = Vector2(1102, 169)
@@ -32,3 +33,5 @@ shape = SubResource("RectangleShape2D_np2vo")
 position = Vector2(544, 79.5)
 scale = Vector2(8.54688, 1.30469)
 texture = ExtResource("6_uo6ph")
+
+[node name="Map" parent="." instance=ExtResource("8_jucqt")]

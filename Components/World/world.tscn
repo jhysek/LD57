@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://t8m27nso7117"]
+
+[ext_resource type="Script" path="res://Components/World/world.gd" id="1_151e2"]
+
+[sub_resource type="TileSet" id="TileSet_c8l0l"]
+
+[node name="Map" type="TileMapLayer"]
+tile_set = SubResource("TileSet_c8l0l")
+script = ExtResource("1_151e2")
