@@ -4,7 +4,14 @@ var tile_size = 16
 var map_size = Vector2(0,0)
 var nav: AStar2D
 
+const CELL_BROKEN_3 = 5
+const CELL_BROKEN_2 = 4
+const CELL_BROKEN_1 = 3
+
 @export var WALKABLE_IDS = [1, 2]
+@export var tile_hitpoints = 10
+
+var states = {}
 
 func _ready() -> void:
 	tile_size = tile_set.tile_size.x
@@ -14,6 +21,29 @@ func _ready() -> void:
 
 	nav = AStar2D.new()
 	refresh_nav(nav)
+
+func hit(map_pos: Vector2, hp: int):
+	if !states.has(map_pos):
+		states[map_pos] = tile_hitpoints
+
+	states[map_pos] -= hp
+	print("TILE: " + str(map_pos) + " HP: " + str(states[map_pos]))
+	update_tile_state(map_pos)
+
+func update_tile_state(map_pos):
+	if states.has(map_pos):
+		var hp = states[map_pos]
+		if hp <= 0:
+			set_cell(map_pos, -1)
+		elif hp <= 3:
+			set_cell(map_pos, CELL_BROKEN_3, Vector2.ZERO)
+		elif hp <= 6:
+			set_cell(map_pos, CELL_BROKEN_2, Vector2.ZERO)
+		elif hp <= 8:
+			set_cell(map_pos, CELL_BROKEN_1, Vector2.ZERO)
+
+func are_neighbors(pos_a, pos_b):
+	return abs(pos_a.x - pos_b.x) <= 1 && abs(pos_a.y - pos_b.y) <= 1
 
 func world_to_map(pos: Vector2):
 	return local_to_map(pos / scale)

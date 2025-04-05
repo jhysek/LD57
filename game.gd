@@ -1,0 +1,34 @@
+extends Node2D
+
+@export var map: TileMapLayer
+@export var indicator: Sprite2D
+@export var player: CharacterBody2D
+
+var current_tile = null
+
+func _ready():
+	assert(map, "Map has to be assigned!")
+	assert(indicator, "Indicator has to be assigned!")
+	assert(player, "Player has to be assigned!")
+
+func _input(event):
+	if event is InputEventMouse:
+		var mouse_pos = get_viewport().get_mouse_position() - get_viewport_rect().size / 2
+		var tile_pos = map.world_to_map(mouse_pos)
+		var tile = map.get_cell(tile_pos)
+
+		indicator.position = map.map_to_world(tile_pos)
+
+		if tile >= 0:
+			current_tile = tile_pos
+			indicator.show()
+		else:
+			current_tile = null
+			indicator.hide()
+
+	if event is InputEventMouseButton and event.pressed:
+		var player_map_pos = map.world_to_map(player.position)
+
+		if current_tile and map.are_neighbors(player_map_pos, current_tile):
+			print("DELETING " + str(current_tile))
+			map.hit(current_tile, 2)

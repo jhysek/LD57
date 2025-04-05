@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="UnderwaterSwimming" load_steps=2 format=3 uid="uid://b8bwy6jd2whta"]
+
+[ext_resource type="Script" path="res://Components/Player/Resources/underwater_swimming.gd" id="1_vm83j"]
+
+[resource]
+script = ExtResource("1_vm83j")
+SPEED = 5000
+enabled = true

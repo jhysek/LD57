@@ -1,15 +1,21 @@
-[gd_scene load_steps=5 format=3 uid="uid://dd5r65nviv8nj"]
+[gd_scene load_steps=6 format=3 uid="uid://dd5r65nviv8nj"]
 
 [ext_resource type="Script" path="res://Components/Player/player.gd" id="1_pvmcb"]
 [ext_resource type="Texture2D" uid="uid://cffbs0ucgyc35" path="res://icon.svg" id="2_2712v"]
-[ext_resource type="Script" path="res://Components/Player/Resources/behavior_resource.gd" id="2_lnp6x"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f67wi"]
 size = Vector2(125, 125)
 
+[sub_resource type="Animation" id="Animation_0rjy2"]
+resource_name = "Jump"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6klrn"]
+_data = {
+"Jump": SubResource("Animation_0rjy2")
+}
+
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_pvmcb")
-behaviors = Array[ExtResource("2_lnp6x")]([null])
 
 [node name="Visual" type="Node2D" parent="."]
 
@@ -23,3 +29,6 @@ shape = SubResource("RectangleShape2D_f67wi")
 [node name="Sfx" type="Node" parent="."]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_6klrn")
+}

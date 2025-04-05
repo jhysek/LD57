@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="TopdownWalking" load_steps=2 format=3 uid="uid://doddsln2ske3o"]
+
+[ext_resource type="Script" path="res://Components/Player/Resources/topdown_walking.gd" id="1_pen3e"]
+
+[resource]
+resource_name = "topdown_walking"
+script = ExtResource("1_pen3e")
+SPEED = 5000
+enabled = true
