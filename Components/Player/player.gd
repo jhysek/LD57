@@ -1,6 +1,8 @@
 extends BehaviorCharacter
 
 signal oxygen_tank_using(enabled: bool)
+signal oxygen_level_changed(new_value: float)
+
 signal player_died
 
 @onready var animation = $AnimationPlayer
@@ -8,15 +10,23 @@ signal player_died
 @export var hp = 20
 
 var onboard = true
-var params = {
+var parameters = {
 	mining_damage = 1,
-	oxygen_tank_seconds = 10
+	oxygen_tank_seconds = 10,
+	backpack_capacity = 1
 }
+
+var backpack = []
 
 func _ready():
 	super()
 	assert(animation, "AnimationPlayer is missing?!")
 	assert(map, "Please connect map to player")
+
+func upgrade_parameter(parameter_name, new_value):
+	if parameter_name == "oxygen_tank_seconds":
+		parameters.oxygen_tank_seconds = new_value
+		get_behavior_by_name('oxygen_tank').update_oxygen_tank_secods(new_value)
 
 func hit(damage):
 	if state == State.DEAD:

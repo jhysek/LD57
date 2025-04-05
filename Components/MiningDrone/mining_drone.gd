@@ -6,6 +6,8 @@ var map: TileMapLayer
 @export var mining_time = 5
 @export var resource_carry = 1
 
+signal resource_offloaded(resource_type)
+
 var dig_cooldown = 1
 
 enum State {
@@ -96,6 +98,7 @@ func approaching_base_handler(delta):
 				target = map.map_to_world(route.pop_front())
 			else:
 				target = null
+				emit_signal("resource_offloaded", "iridium")
 				state = State.IDLE
 				cooldown = 1
 

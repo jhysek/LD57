@@ -46,4 +46,4 @@ func enable_behavior(resource_name):
 func disable_behavior(resource_name):
 	var behavior = get_behavior_by_name(resource_name)
 	if behavior:
-		behavior.disable
+		behavior.disable()

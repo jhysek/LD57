@@ -15,6 +15,8 @@ shape = SubResource("CircleShape2D_d15lw")
 [node name="Visual" type="Node2D" parent="."]
 
 [node name="Body" type="Sprite2D" parent="Visual"]
+light_mask = 2
+visibility_layer = 2
 scale = Vector2(0.24, 0.24)
 texture = ExtResource("1_ycqa3")
 

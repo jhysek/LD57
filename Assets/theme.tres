@@ -1,0 +1,72 @@
+[gd_resource type="Theme" load_steps=9 format=3 uid="uid://cqse0wqxp422d"]
+
+[ext_resource type="FontFile" uid="uid://dx2te28gosc8a" path="res://Assets/bebas.otf" id="1_kkoor"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rdjwn"]
+bg_color = Color(0.32, 0.32, 0.32, 0.584314)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7mv32"]
+bg_color = Color(0, 0, 0, 0.584314)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kcbwq"]
+bg_color = Color(0.427451, 0.129412, 0.411765, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rxrxp"]
+bg_color = Color(0, 0, 0, 0.584314)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_onfi0"]
+bg_color = Color(0, 0, 0, 0.584314)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4mtp6"]
+bg_color = Color(0, 0, 0, 0.545098)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8co5w"]
+bg_color = Color(3.65794e-06, 0.679333, 0.791369, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_bottom_left = 10
+
+[resource]
+Button/fonts/font = null
+Button/styles/disabled = SubResource("StyleBoxFlat_rdjwn")
+Button/styles/focus = SubResource("StyleBoxFlat_7mv32")
+Button/styles/hover = SubResource("StyleBoxFlat_kcbwq")
+Button/styles/normal = SubResource("StyleBoxFlat_rxrxp")
+Label/font_sizes/font_size = 20
+Label/fonts/font = ExtResource("1_kkoor")
+Panel/styles/panel = SubResource("StyleBoxFlat_onfi0")
+ProgressBar/styles/background = SubResource("StyleBoxFlat_4mtp6")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_8co5w")

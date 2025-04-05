@@ -1,0 +1,181 @@
+[gd_scene load_steps=14 format=3 uid="uid://bdqkxrciqdjvg"]
+
+[ext_resource type="Script" path="res://Components/Indicators/indicators.gd" id="1_vlkqy"]
+[ext_resource type="Texture2D" uid="uid://cto7k3dw0b3vg" path="res://Assets/bubble.png" id="1_w2teq"]
+[ext_resource type="Theme" uid="uid://cqse0wqxp422d" path="res://Assets/theme.tres" id="2_apuxm"]
+[ext_resource type="Texture2D" uid="uid://cio86tir2jdeo" path="res://Assets/iridium_piece.png" id="3_6q242"]
+[ext_resource type="FontFile" uid="uid://dx2te28gosc8a" path="res://Assets/bebas.otf" id="3_e57d8"]
+[ext_resource type="Texture2D" uid="uid://dhvfu00ixvvq" path="res://Assets/crystal_piece.png" id="4_ox4oj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8lrt4"]
+bg_color = Color(0, 0, 0, 0.345098)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dfdp0"]
+bg_color = Color(0.98, 0.98, 0.98, 0.529412)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4ya8l"]
+bg_color = Color(0.0616212, 0.68013, 0.720676, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 30
+
+[sub_resource type="Animation" id="Animation_g060g"]
+resource_name = "IridiumBounce"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("IridiumCount:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4, 1),
+"transitions": PackedFloat32Array(0.307786, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.8, 1.8), Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_ewmqg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("IridiumCount:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CrystalCount:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_oxrsu"]
+resource_name = "CrystalBounce"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CrystalCount:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4, 1),
+"transitions": PackedFloat32Array(0.287175, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.8, 1.8), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_w0arl"]
+_data = {
+"CrystalBounce": SubResource("Animation_oxrsu"),
+"IridiumBounce": SubResource("Animation_g060g"),
+"RESET": SubResource("Animation_ewmqg")
+}
+
+[node name="Indicators" type="Control"]
+layout_mode = 3
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 80.0
+grow_horizontal = 2
+script = ExtResource("1_vlkqy")
+metadata/_edit_horizontal_guides_ = [12.0]
+
+[node name="OxygenPanel" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 43.0
+offset_top = 11.0
+offset_right = 140.0
+offset_bottom = 51.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_8lrt4")
+
+[node name="Oxygen" type="Sprite2D" parent="."]
+position = Vector2(61, 31)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_w2teq")
+
+[node name="OxygenProgress" type="ProgressBar" parent="."]
+layout_mode = 0
+offset_left = 77.0
+offset_top = 18.0
+offset_right = 130.0
+offset_bottom = 45.0
+theme_override_fonts/font = ExtResource("3_e57d8")
+theme_override_font_sizes/font_size = 15
+theme_override_styles/background = SubResource("StyleBoxFlat_dfdp0")
+theme_override_styles/fill = SubResource("StyleBoxFlat_4ya8l")
+value = 100.0
+rounded = true
+
+[node name="IridiumPanel" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 149.0
+offset_top = 11.0
+offset_right = 246.0
+offset_bottom = 51.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_8lrt4")
+
+[node name="IridiumCount" type="Label" parent="."]
+layout_mode = 0
+offset_left = 184.0
+offset_top = 16.0
+offset_right = 235.0
+offset_bottom = 43.0
+pivot_offset = Vector2(24, 14)
+theme = ExtResource("2_apuxm")
+text = "0	"
+horizontal_alignment = 1
+
+[node name="Iridium" type="Sprite2D" parent="."]
+position = Vector2(167, 31)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("3_6q242")
+
+[node name="CrystalPanel" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 255.0
+offset_top = 11.0
+offset_right = 352.0
+offset_bottom = 51.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_8lrt4")
+
+[node name="CrystalCount" type="Label" parent="."]
+layout_mode = 0
+offset_left = 289.0
+offset_top = 17.0
+offset_right = 342.0
+offset_bottom = 46.0
+pivot_offset = Vector2(27, 15)
+theme = ExtResource("2_apuxm")
+text = "0"
+horizontal_alignment = 1
+
+[node name="Crystal" type="Sprite2D" parent="."]
+position = Vector2(275, 32)
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("4_ox4oj")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_w0arl")
+}

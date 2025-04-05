@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://clsk4dq2hrn4m"]
+[gd_scene load_steps=9 format=3 uid="uid://clsk4dq2hrn4m"]
 
 [ext_resource type="Texture2D" uid="uid://cx37xp0fcnk2f" path="res://Assets/droplet.png" id="1_ou5fk"]
 [ext_resource type="Script" path="res://Components/Base/base.gd" id="2_onu5h"]
 [ext_resource type="Texture2D" uid="uid://cf287rvqx26uc" path="res://Assets/light.png" id="3_fehuf"]
+[ext_resource type="Theme" uid="uid://cqse0wqxp422d" path="res://Assets/theme.tres" id="4_n8l4x"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3mytq"]
 radius = 164.001
@@ -17,32 +18,6 @@ _data = {
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yde7u"]
 size = Vector2(855, 488)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4mtp6"]
-bg_color = Color(0, 0, 0, 0.545098)
-border_width_left = 10
-border_width_top = 10
-border_width_right = 10
-border_width_bottom = 10
-border_color = Color(0, 0, 0, 1)
-border_blend = true
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8co5w"]
-bg_color = Color(3.65794e-06, 0.679333, 0.791369, 1)
-border_width_left = 10
-border_width_top = 10
-border_width_bottom = 10
-border_color = Color(0, 0, 0, 1)
-corner_radius_top_left = 10
-corner_radius_bottom_left = 10
-
-[sub_resource type="Theme" id="Theme_sekn1"]
-ProgressBar/styles/background = SubResource("StyleBoxFlat_4mtp6")
-ProgressBar/styles/fill = SubResource("StyleBoxFlat_8co5w")
 
 [node name="Base" type="Sprite2D"]
 texture = ExtResource("1_ou5fk")
@@ -79,7 +54,7 @@ offset_left = 11.0
 offset_top = -378.0
 offset_right = 461.0
 offset_bottom = -333.0
-theme = SubResource("Theme_sekn1")
+theme = ExtResource("4_n8l4x")
 value = 50.0
 show_percentage = false
 

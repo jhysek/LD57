@@ -1,9 +1,10 @@
 extends TileMapLayer
 
+var Particles = preload("res://Components/World/particles.tscn")
+
 var tile_size = 16
 var map_size = Vector2(0,0)
 var nav: AStar2D
-@onready var particles = $Particles
 
 const CELL_EMPTY = -1
 const CELL_DIRT_1 = 1
@@ -36,7 +37,7 @@ func _ready() -> void:
 	init_resources()
 
 	nav = AStar2D.new()
-	refresh_nav(nav)
+	refresh_nav()
 
 
 func init_resources():
@@ -69,14 +70,16 @@ func hit(map_pos: Vector2, hp: int):
 
 	if !states.has(map_pos):
 		states[map_pos] = tile_hitpoints
-	particles.position = map_to_world(map_pos)
-	particles.emitting = true
+
+	dig_effect(map_pos)
 
 	states[map_pos] -= hp
 	update_tile_state(map_pos)
 
 func dig_effect(map_pos):
+	var particles = Particles.instantiate()
 	particles.position = map_to_world(map_pos)
+	add_child(particles)
 	particles.emitting = true
 
 func update_tile_state(map_pos):
@@ -85,7 +88,7 @@ func update_tile_state(map_pos):
 		if hp <= 0:
 			set_cell(map_pos, -1)
 			reveal_resource(map_pos)
-			refresh_nav(nav)
+			refresh_nav()
 		elif hp <= 3:
 			set_cell(map_pos, CELL_BROKEN_3, Vector2.ZERO)
 		elif hp <= 6:
@@ -120,7 +123,7 @@ func neighbors_with_accessible(map_pos):
 		WALKABLE_IDS.has(get_cell(map_pos + Vector2i.UP)) || \
 		WALKABLE_IDS.has(get_cell(map_pos + Vector2i.DOWN))
 
-func refresh_nav(nav):
+func refresh_nav():
 	var rect = get_used_rect()
 
 	# Add nodes
@@ -132,13 +135,13 @@ func refresh_nav(nav):
 	# Add connections
 	for x in range(rect.position.x, rect.position.x + rect.size.x):
 		for y in range(rect.position.y, rect.position.y + rect.size.y):
-			# print(" => " + str(Vector2(x,y)))
-			var neighbors = get_surrounding_cells(Vector2i(x, y))
-			for neighbor in neighbors:
-				if accessible_cell(neighbor):
-					nav.connect_points(
-						get_cell_id_vec(Vector2(x, y)),
-						get_cell_id_vec(neighbor))
+			if nav.has_point(get_cell_id_vec(Vector2i(x,y))):
+				var neighbors = get_surrounding_cells(Vector2i(x, y))
+				for neighbor in neighbors:
+					if nav.has_point(get_cell_id_vec(neighbor)) and accessible_cell(neighbor):
+						nav.connect_points(
+							get_cell_id_vec(Vector2(x, y)),
+							get_cell_id_vec(neighbor))
 
 
 func add_label_to(pos, text):

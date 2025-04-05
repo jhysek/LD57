@@ -1,0 +1,111 @@
+[gd_scene load_steps=8 format=3 uid="uid://dk8e3p7xq0uc"]
+
+[ext_resource type="Theme" uid="uid://cqse0wqxp422d" path="res://Assets/theme.tres" id="1_cx4om"]
+[ext_resource type="Texture2D" uid="uid://cio86tir2jdeo" path="res://Assets/iridium_piece.png" id="2_h2wfp"]
+[ext_resource type="Script" path="res://Components/ShopItem/item.gd" id="2_whjll"]
+[ext_resource type="Texture2D" uid="uid://dhvfu00ixvvq" path="res://Assets/crystal_piece.png" id="3_x7nui"]
+
+[sub_resource type="Animation" id="Animation_hx8w7"]
+resource_name = "No"
+length = 1.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Price:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 0.966667, 1.16667),
+"transitions": PackedFloat32Array(0.435275, 2.63902, 0.535887, 2.2974, 0.435275, 2.14355, 0.353553),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(-30, 0), Vector2(0, 0), Vector2(30, 0), Vector2(0, 0), Vector2(-30, 0), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_awbc5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Price:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-30, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hioo5"]
+_data = {
+"No": SubResource("Animation_hx8w7"),
+"RESET": SubResource("Animation_awbc5")
+}
+
+[node name="Item" type="Panel"]
+offset_right = 343.0
+offset_bottom = 40.0
+theme = ExtResource("1_cx4om")
+script = ExtResource("2_whjll")
+
+[node name="Name" type="Label" parent="."]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 7.0
+offset_right = 198.0
+offset_bottom = 34.0
+scale = Vector2(0.8, 0.8)
+text = "IRIDIUM  MINING  DRONE"
+
+[node name="Price" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Iridium" type="Label" parent="Price"]
+offset_left = 223.0
+offset_top = 9.075
+offset_right = 282.0
+offset_bottom = 36.075
+scale = Vector2(0.8, 0.8)
+text = "10 "
+
+[node name="Crystal" type="Label" parent="Price"]
+offset_left = 285.0
+offset_top = 9.075
+offset_right = 344.0
+offset_bottom = 36.075
+scale = Vector2(0.8, 0.8)
+text = "10 "
+
+[node name="IridiumIcon" type="Sprite2D" parent="Price"]
+light_mask = 2
+visibility_layer = 2
+position = Vector2(254, 21.075)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("2_h2wfp")
+
+[node name="CrystalIcon" type="Sprite2D" parent="Price"]
+light_mask = 2
+visibility_layer = 2
+position = Vector2(317, 21.075)
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("3_x7nui")
+
+[node name="Button" type="Button" parent="."]
+light_mask = 2
+visibility_layer = 2
+layout_mode = 0
+offset_left = 349.0
+offset_right = 425.0
+offset_bottom = 41.0
+theme = ExtResource("1_cx4om")
+text = "DEAL"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_hioo5")
+}
+speed_scale = 2.0
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
