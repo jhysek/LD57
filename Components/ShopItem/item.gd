@@ -1,10 +1,5 @@
 extends Panel
 
-@export var title = "Oxygen"
-@export var price_iridium = 10
-@export var price_crystals = 10
-@export var output = "oxygen_lvl2"
-
 var game: Node2D
 var deal_idx
 var original_pos
@@ -19,7 +14,9 @@ func init(_game, _deal_idx):
 
 func update_deal_info():
 	var deal = game.deals[deal_idx]
-	$Name.text = deal.title
+	$Name.text = deal.title + "     lvl.   " + str(deal.level + 1)
+	if deal.has("max_levels"):
+		$Name.text += "   /   " + str(deal.max_levels)
 	$Price/Iridium.text = str(deal.price_iridium)
 
 	if deal.price_crystals > 0:
@@ -51,6 +48,6 @@ func close():
 func _on_button_pressed() -> void:
 	var deal = game.deals[deal_idx]
 	if game.has_enough_resources(deal):
-		game.deal(self)
+		game.purchase(deal)
 	else:
 		$AnimationPlayer.play("No")

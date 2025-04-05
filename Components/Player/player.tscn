@@ -23,6 +23,8 @@ script = ExtResource("1_pvmcb")
 [node name="Visual" type="Node2D" parent="."]
 
 [node name="Sprite2D" type="Sprite2D" parent="Visual"]
+light_mask = 2
+visibility_layer = 2
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("2_2712v")
 

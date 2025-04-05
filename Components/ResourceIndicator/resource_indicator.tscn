@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://c6bin6jvgfxgr"]
+
+[ext_resource type="Script" path="res://Components/ResourceIndicator/resource_indicator.gd" id="1_u6qbp"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_733jt"]
+bg_color = Color(0, 0, 0, 0.67451)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="ResourceIndicator" type="Panel"]
+offset_right = 36.0
+offset_bottom = 14.0
+pivot_offset = Vector2(18, 7)
+theme_override_styles/panel = SubResource("StyleBoxFlat_733jt")
+script = ExtResource("1_u6qbp")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 1.0
+offset_right = 57.0
+offset_bottom = 24.0
+scale = Vector2(0.5, 0.5)
+text = "30 / 30"

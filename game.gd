@@ -8,13 +8,17 @@ extends Node2D
 @export var oxygen_tank_seconds: int = 30
 
 var ShopItem = preload("res://Components/ShopItem/item.tscn")
+var MiningBot = preload("res://Components/MiningDrone/mining_drone.tscn")
+
 var current_tile = null
 var paused = false
 
 var parameters = {
 	iridium_bots_carry = 1,
 	crystal_bots_carry = 1,
-	oxygen_tank_seconds = oxygen_tank_seconds
+	oxygen_tank_seconds = oxygen_tank_seconds,
+	drill_damage = 1,
+	weapon_damage = 1
 }
 
 var inventory = {
@@ -31,16 +35,22 @@ var deals = [
 		price_iridium = 10,
 		price_crystals = 0,
 		iridium_multiplier = 1.3,
+		crystal_multiplier = 1.5,
+		parameter_name = "oxygen_tank_seconds",
+		parameter_multiplier = 1.1,
 		node = null
 	},
 
 	{
 		title = "Drills",
 		level = 0,
+		max_levels = 10,
 		price_iridium = 20,
 		price_crystals = 5,
 		iridium_multiplier = 1.3,
 		crystal_multiplier = 1.5,
+		parameter_name = "drill_damage",
+		parameter_addition = 1,
 		node = null
 	},
 
@@ -51,6 +61,8 @@ var deals = [
 		price_crystals = 5,
 		iridium_multiplier = 1.3,
 		crystal_multiplier = 1.5,
+		parameter_name = "weapon_damage",
+		parameter_addition = 1,
 		node = null
 	},
 
@@ -60,6 +72,8 @@ var deals = [
 		price_iridium = 20,
 		price_crystals = 0,
 		iridium_multiplier = 1.3,
+		crystal_multiplier = 1.5,
+		action = "iridium_bot",
 		node = null
 	},
 
@@ -70,6 +84,7 @@ var deals = [
 		price_crystals = 5,
 		iridium_multiplier = 1.3,
 		crystal_multiplier = 1.5,
+		action = "crystal_bot",
 		node = null
 	},
 
@@ -80,6 +95,7 @@ var deals = [
 		price_crystals = 5,
 		iridium_multiplier = 1.3,
 		crystal_multiplier = 1.5,
+		action = "defensive_bot",
 		node = null
 	},
 
@@ -90,6 +106,8 @@ var deals = [
 		price_crystals = 5,
 		iridium_multiplier = 1.3,
 		crystal_multiplier = 1.5,
+		parameter_name = "submarine_hp",
+		parameter_addition = 10,
 		node = null
 	},
 
@@ -100,6 +118,7 @@ var deals = [
 		price_crystals = 5,
 		iridium_multiplier = 1.3,
 		crystal_multiplier = 1.5,
+		action = "goal_1",
 		node = null
 	},
 
@@ -110,6 +129,7 @@ var deals = [
 		price_crystals = 5,
 		iridium_multiplier = 1.3,
 		crystal_multiplier = 1.5,
+		action = "goal_2",
 		node = null
 	}
 ]
@@ -125,17 +145,6 @@ func _ready():
 
 	initialize_deals()
 
-	#####
-
-	$Enemies/Enemy.activate($Base)
-	$MiningDrone.init(map, $Base.position)
-	$MiningDrone.resource_offloaded.connect(func(type):
-		print("RESOURCE OFFLOADED: " + type)
-		if type == "iridium":
-			update_inventory(type, parameters.iridium_bots_carry)
-		if type == "crystal":
-			update_inventory(type, parameters.crystal_bots_carry)
-		)
 
 func update_inventory(resource, diff):
 	if inventory.has(resource):
@@ -158,12 +167,47 @@ func initialize_deals():
 func purchase(deal):
 	if has_enough_resources(deal):
 		inventory.iridium -= deal.price_iridium
-		inventory.crystal -= deal.crystal
+		inventory.crystal -= deal.price_crystals
+		$UI/Indicators.update_crystals(inventory.crystal)
+		$UI/Indicators.update_iridium(inventory.iridium)
+		deal.level += 1
+		deal.price_iridium *= deal.iridium_multiplier
+		deal.price_crystals *= deal.crystal_multiplier
 
+		if deal.has("parameter_name"):
+			assert(parameters.has(deal.parameter_name), "Parameters don't have '" + deal.parameter_name + "' refered by a deal.")
+			if deal.has("parameter_multiplier"):
+				parameters[deal.parameter_name] *= deal.parameter_multiplier
+			if deal.has("parameter_addition"):
+				parameters[deal.parameter_name] += deal.parameter_addition
 
+		if deal.has("action"):
+			match deal.action:
+				'iridium_bot':
+					deploy_iridium_bot()
+				'crystal_bot':
+					print("Deploying CRYSTAL BOT")
+				'defensive_bot':
+					print("Deploying DEFENSIVE BOT")
+
+		for d in deals:
+			d.node.update_deal_info()
 
 func has_enough_resources(deal):
 	return inventory.iridium >= deal.price_iridium && inventory.crystal >= deal.price_crystals
+
+func deploy_iridium_bot():
+	var miner = MiningBot.instantiate()
+	miner.position = $Base.position
+	add_child(miner)
+	miner.init(map, $Base.position)
+	miner.resource_offloaded.connect(func(type):
+		print("RESOURCE OFFLOADED: " + type)
+		if type == "iridium":
+			update_inventory(type, parameters.iridium_bots_carry)
+		if type == "crystal":
+			update_inventory(type, parameters.crystal_bots_carry)
+		)
 
 func _input(event):
 	if paused:

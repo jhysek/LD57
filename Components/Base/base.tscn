@@ -20,6 +20,7 @@ _data = {
 size = Vector2(855, 488)
 
 [node name="Base" type="Sprite2D"]
+self_modulate = Color(0.616293, 0.616293, 0.616293, 1)
 texture = ExtResource("1_ou5fk")
 script = ExtResource("2_onu5h")
 

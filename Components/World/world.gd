@@ -25,7 +25,9 @@ const RESOURCE_CRYSTAL = 9
 var states = {}
 var resources = {
 	iridium = {},
-	crystal = {}
+	crystal = {},
+	total_iridium = 0,
+	total_crystal = 0
 }
 
 func _ready() -> void:
@@ -42,14 +44,27 @@ func _ready() -> void:
 
 func init_resources():
 	for iridium in get_used_cells_by_id(RESOURCE_IRIDIUM):
-		resources.iridium[iridium] = randi_range(20,80)
+		var capacity = randi_range(50,80)
+		resources.iridium[iridium] = {
+			remaining = capacity,
+			max = capacity
+		}
+		resources.total_iridium += capacity
+
 		if !neighbors_with_accessible(iridium):
 			set_cell(iridium, CELL_DIRT_1, Vector2.ZERO)
 
 	for crystal in get_used_cells_by_id(RESOURCE_CRYSTAL):
-		resources.crystal[crystal] = randi_range(10,30)
+		var capacity = randi_range(20,30)
+		resources.crystal[crystal] = {
+			remaining = capacity,
+			max = capacity
+		}
+		resources.total_crystal += capacity
 		if !neighbors_with_accessible(crystal):
 			set_cell(crystal, CELL_DIRT_1, Vector2.ZERO)
+
+	print("TOTAL RESOURCES: " + str(resources.total_iridium) + " / " + str(resources.total_crystal))
 
 func reveal_resource(digged_map_pos):
 	for iridium in resources.iridium:
