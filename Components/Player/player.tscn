@@ -3,8 +3,8 @@
 [ext_resource type="Script" path="res://Components/Player/player.gd" id="1_pvmcb"]
 [ext_resource type="Texture2D" uid="uid://cffbs0ucgyc35" path="res://icon.svg" id="2_2712v"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_f67wi"]
-size = Vector2(125, 125)
+[sub_resource type="CircleShape2D" id="CircleShape2D_d8vk6"]
+radius = 16.5076
 
 [sub_resource type="Animation" id="Animation_0rjy2"]
 resource_name = "Jump"
@@ -20,11 +20,11 @@ script = ExtResource("1_pvmcb")
 [node name="Visual" type="Node2D" parent="."]
 
 [node name="Sprite2D" type="Sprite2D" parent="Visual"]
+scale = Vector2(0.25, 0.25)
 texture = ExtResource("2_2712v")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-1.5, 1.5)
-shape = SubResource("RectangleShape2D_f67wi")
+shape = SubResource("CircleShape2D_d8vk6")
 
 [node name="Sfx" type="Node" parent="."]
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=4 uid="uid://t8m27nso7117"]
+[gd_scene load_steps=18 format=4 uid="uid://t8m27nso7117"]
 
 [ext_resource type="Script" path="res://Components/World/world.gd" id="1_151e2"]
 [ext_resource type="Texture2D" uid="uid://dogys0uadblye" path="res://Assets/tile.png" id="2_g6qkh"]
@@ -6,12 +6,14 @@
 [ext_resource type="Texture2D" uid="uid://d0mbxmbnyqhee" path="res://Assets/broken01.png" id="3_5in0j"]
 [ext_resource type="Texture2D" uid="uid://dhowyoavk1s2p" path="res://Assets/broken02.png" id="4_c218x"]
 [ext_resource type="Texture2D" uid="uid://doi4j7uve3gkt" path="res://Assets/broken03.png" id="5_17usp"]
+[ext_resource type="Texture2D" uid="uid://dejh04jp45riy" path="res://Assets/unreakable2.png" id="6_h6cy5"]
+[ext_resource type="Texture2D" uid="uid://p8rsh42ptjde" path="res://Assets/rock_particle.png" id="7_4afs0"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wnxiu"]
 texture = ExtResource("2_g6qkh")
 texture_region_size = Vector2i(74, 72)
 0:0/0 = 0
-0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, -32, 32, 32, 32, 32, -32)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_s0inn"]
 texture = ExtResource("2_yypg6")
@@ -37,6 +39,13 @@ texture_region_size = Vector2i(69, 69)
 0:0/0 = 0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, -32, 32, 32, 32, 32, -32)
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_agh3c"]
+texture = ExtResource("6_h6cy5")
+texture_region_size = Vector2i(70, 70)
+0:0/0 = 0
+0:0/0/modulate = Color(0.495228, 0.495228, 0.495228, 1)
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, 32, 32, 32, 32, -32, -32, -32)
+
 [sub_resource type="TileSet" id="TileSet_c8l0l"]
 tile_size = Vector2i(64, 64)
 physics_layer_0/collision_layer = 1
@@ -45,9 +54,41 @@ sources/2 = SubResource("TileSetAtlasSource_s0inn")
 sources/3 = SubResource("TileSetAtlasSource_o0ahc")
 sources/4 = SubResource("TileSetAtlasSource_ncspg")
 sources/5 = SubResource("TileSetAtlasSource_54bfr")
+sources/6 = SubResource("TileSetAtlasSource_agh3c")
+
+[sub_resource type="Curve" id="Curve_ebrmv"]
+min_value = 0.25
+max_value = 0.8
+_data = [Vector2(0.0180055, 0.471611), 0.0, 0.0, 0, 0, Vector2(0.344875, 0.766029), 0.0408788, 0.0408788, 0, 0, Vector2(1, 0.537667), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_45cb0"]
+offsets = PackedFloat32Array(0.0123457, 0.716049, 1)
+colors = PackedColorArray(0, 0, 0, 0.678431, 0.224647, 0.224647, 0.224647, 1, 0, 0, 0, 0)
 
 [node name="Map" type="TileMapLayer"]
 position = Vector2(0, 1)
 tile_map_data = PackedByteArray("AAAEAAYAAgAAAAAAAAAFAAYAAgAAAAAAAAAFAAUAAQAAAAAAAAAFAAQAAgAAAAAAAAAGAAYAAgAAAAAAAAAGAAUAAgAAAAAAAAAGAAQAAgAAAAAAAAAHAAQAAgAAAAAAAAAIAAQAAgAAAAAAAAAJAAQAAgAAAAAAAAAJAAUAAgAAAAAAAAAKAAUAAQAAAAAAAAAIAAUAAgAAAAAAAAAHAAUAAgAAAAAAAAAHAAYAAgAAAAAAAAAIAAYAAgAAAAAAAAAJAAYAAgAAAAAAAAAKAAcAAQAAAAAAAAAJAAcAAQAAAAAAAAAIAAcAAgAAAAAAAAAJAAMAAgAAAAAAAAAIAAMAAgAAAAAAAAAHAAMAAgAAAAAAAAAGAAMAAgAAAAAAAAAFAAMAAgAAAAAAAAAEAAMAAQAAAAAAAAAFAAIAAQAAAAAAAAAEAAIAAQAAAAAAAAADAAIAAQAAAAAAAAACAAIAAQAAAAAAAAADAAMAAQAAAAAAAAAGAAIAAQAAAAAAAAAHAAIAAQAAAAAAAAAIAAIAAQAAAAAAAAAIAAEAAQAAAAAAAAAHAAEAAQAAAAAAAAAGAAEAAQAAAAAAAAABAAIAAQAAAAAAAAACAAMAAQAAAAAAAAAEAAQAAQAAAAAAAAAEAAUAAQAAAAAAAAALAAYAAQAAAAAAAAALAAcAAQAAAAAAAAAMAAcAAQAAAAAAAAANAAcAAQAAAAAAAAANAAgAAQAAAAAAAAAMAAgAAQAAAAAAAAALAAgAAQAAAAAAAAAKAAgAAQAAAAAAAAAKAAYAAQAAAAAAAAALAAUAAQAAAAAAAAAMAAYAAQAAAAAAAAA=")
 tile_set = SubResource("TileSet_c8l0l")
 script = ExtResource("1_151e2")
+
+[node name="Particles" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 5
+lifetime = 0.5
+one_shot = true
+speed_scale = 1.6
+explosiveness = 1.0
+randomness = 1.0
+texture = ExtResource("7_4afs0")
+direction = Vector2(1, 1)
+spread = 180.0
+gravity = Vector2(0, 200)
+initial_velocity_min = 60.0
+initial_velocity_max = 100.0
+angular_velocity_min = 10.0
+angular_velocity_max = 100.0
+linear_accel_min = 2.0
+linear_accel_max = 10.0
+scale_amount_curve = SubResource("Curve_ebrmv")
+color_ramp = SubResource("Gradient_45cb0")

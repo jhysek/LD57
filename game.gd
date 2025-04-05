@@ -3,6 +3,7 @@ extends Node2D
 @export var map: TileMapLayer
 @export var indicator: Sprite2D
 @export var player: CharacterBody2D
+@export var cam: Camera2D
 
 var current_tile = null
 
@@ -10,16 +11,17 @@ func _ready():
 	assert(map, "Map has to be assigned!")
 	assert(indicator, "Indicator has to be assigned!")
 	assert(player, "Player has to be assigned!")
+	assert(cam, "Camera has to be assigned")
 
 func _input(event):
 	if event is InputEventMouse:
-		var mouse_pos = get_viewport().get_mouse_position() - get_viewport_rect().size / 2
+		var mouse_pos = (get_viewport().get_mouse_position() - get_viewport_rect().size / 2)
 		var tile_pos = map.world_to_map(mouse_pos)
 		var tile = map.get_cell(tile_pos)
 
 		indicator.position = map.map_to_world(tile_pos)
 
-		if tile >= 0:
+		if map.is_breakable(tile_pos):
 			current_tile = tile_pos
 			indicator.show()
 		else:

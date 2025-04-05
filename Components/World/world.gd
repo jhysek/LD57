@@ -3,10 +3,12 @@ extends TileMapLayer
 var tile_size = 16
 var map_size = Vector2(0,0)
 var nav: AStar2D
+@onready var particles = $Particles
 
 const CELL_BROKEN_3 = 5
 const CELL_BROKEN_2 = 4
 const CELL_BROKEN_1 = 3
+const CELL_UNBREAKABLE = 6
 
 @export var WALKABLE_IDS = [1, 2]
 @export var tile_hitpoints = 10
@@ -22,12 +24,20 @@ func _ready() -> void:
 	nav = AStar2D.new()
 	refresh_nav(nav)
 
+func is_breakable(map_pos: Vector2):
+	var cell_id = get_cell(map_pos)
+	return cell_id >= 0 && cell_id != CELL_UNBREAKABLE
+
 func hit(map_pos: Vector2, hp: int):
+	if !is_breakable(map_pos):
+		return
+
 	if !states.has(map_pos):
 		states[map_pos] = tile_hitpoints
+	particles.position = map_to_world(map_pos)
+	particles.emitting = true
 
 	states[map_pos] -= hp
-	print("TILE: " + str(map_pos) + " HP: " + str(states[map_pos]))
 	update_tile_state(map_pos)
 
 func update_tile_state(map_pos):
@@ -53,6 +63,8 @@ func map_to_world(map_pos: Vector2i):
 
 func get_cell(map_pos):
 	return get_cell_source_id(map_pos)
+
+### TODO: delete all code below if not needed
 
 func get_cell_id(x, y):
 	return x * map_size.x + y
