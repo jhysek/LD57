@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="UnderwaterOxygenTank" load_steps=2 format=3 uid="uid://b1ey45lo8ysc4"]
+
+[ext_resource type="Script" path="res://Components/Player/Resources/underwater_oxygentank.gd" id="1_d8vxg"]
+
+[resource]
+script = ExtResource("1_d8vxg")
+CAPACITY = 100
+enabled = true

@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=4 uid="uid://t8m27nso7117"]
+[gd_scene load_steps=22 format=4 uid="uid://t8m27nso7117"]
 
 [ext_resource type="Script" path="res://Components/World/world.gd" id="1_151e2"]
 [ext_resource type="Texture2D" uid="uid://dogys0uadblye" path="res://Assets/tile.png" id="2_g6qkh"]
@@ -8,6 +8,8 @@
 [ext_resource type="Texture2D" uid="uid://doi4j7uve3gkt" path="res://Assets/broken03.png" id="5_17usp"]
 [ext_resource type="Texture2D" uid="uid://dejh04jp45riy" path="res://Assets/unreakable2.png" id="6_h6cy5"]
 [ext_resource type="Texture2D" uid="uid://p8rsh42ptjde" path="res://Assets/rock_particle.png" id="7_4afs0"]
+[ext_resource type="Texture2D" uid="uid://cimr4pkpsg7jo" path="res://Assets/resource.png" id="7_m82q2"]
+[ext_resource type="Texture2D" uid="uid://skd6crutlfi0" path="res://Assets/crystals.png" id="8_36i6e"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wnxiu"]
 texture = ExtResource("2_g6qkh")
@@ -43,8 +45,20 @@ texture_region_size = Vector2i(69, 69)
 texture = ExtResource("6_h6cy5")
 texture_region_size = Vector2i(70, 70)
 0:0/0 = 0
-0:0/0/modulate = Color(0.495228, 0.495228, 0.495228, 1)
+0:0/0/modulate = Color(0.0962047, 0.0962048, 0.0962047, 1)
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, 32, 32, 32, 32, -32, -32, -32)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_kn8j2"]
+texture = ExtResource("7_m82q2")
+texture_region_size = Vector2i(73, 72)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, 32, 32, 32, 32, -32, -32, -32)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qf1ub"]
+texture = ExtResource("8_36i6e")
+texture_region_size = Vector2i(74, 72)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, -32, 32, 32, 32, 32, -32)
 
 [sub_resource type="TileSet" id="TileSet_c8l0l"]
 tile_size = Vector2i(64, 64)
@@ -55,6 +69,8 @@ sources/3 = SubResource("TileSetAtlasSource_o0ahc")
 sources/4 = SubResource("TileSetAtlasSource_ncspg")
 sources/5 = SubResource("TileSetAtlasSource_54bfr")
 sources/6 = SubResource("TileSetAtlasSource_agh3c")
+sources/8 = SubResource("TileSetAtlasSource_kn8j2")
+sources/9 = SubResource("TileSetAtlasSource_qf1ub")
 
 [sub_resource type="Curve" id="Curve_ebrmv"]
 min_value = 0.25

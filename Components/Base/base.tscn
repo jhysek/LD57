@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://clsk4dq2hrn4m"]
+[gd_scene load_steps=11 format=3 uid="uid://clsk4dq2hrn4m"]
 
 [ext_resource type="Texture2D" uid="uid://cx37xp0fcnk2f" path="res://Assets/droplet.png" id="1_ou5fk"]
 [ext_resource type="Script" path="res://Components/Base/base.gd" id="2_onu5h"]
@@ -6,6 +6,43 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3mytq"]
 radius = 164.001
+
+[sub_resource type="Animation" id="Animation_hcxc7"]
+resource_name = "Explode"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2n8th"]
+_data = {
+"Explode": SubResource("Animation_hcxc7")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yde7u"]
+size = Vector2(855, 488)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4mtp6"]
+bg_color = Color(0, 0, 0, 0.545098)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8co5w"]
+bg_color = Color(3.65794e-06, 0.679333, 0.791369, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="Theme" id="Theme_sekn1"]
+ProgressBar/styles/background = SubResource("StyleBoxFlat_4mtp6")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_8co5w")
 
 [node name="Base" type="Sprite2D"]
 texture = ExtResource("1_ou5fk")
@@ -24,6 +61,27 @@ energy = 2.0
 texture = ExtResource("3_fehuf")
 offset = Vector2(699.858, -30.506)
 texture_scale = 8.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_2n8th")
+}
+
+[node name="EnemyCollider" type="Area2D" parent="." groups=["Player"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyCollider"]
+position = Vector2(82.5, 20)
+shape = SubResource("RectangleShape2D_yde7u")
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+visible = false
+offset_left = 11.0
+offset_top = -378.0
+offset_right = 461.0
+offset_bottom = -333.0
+theme = SubResource("Theme_sekn1")
+value = 50.0
+show_percentage = false
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

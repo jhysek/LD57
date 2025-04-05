@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://c3gmqx7x8da18"]
+
+[ext_resource type="Script" path="res://Components/MiningDrone/mining_drone.gd" id="1_77uev"]
+[ext_resource type="Texture2D" uid="uid://cffbs0ucgyc35" path="res://icon.svg" id="2_tg74y"]
+
+[node name="MiningDrone" type="Area2D" groups=["Player"]]
+script = ExtResource("1_77uev")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+self_modulate = Color(0.672414, 8.66354e-07, 0.350444, 1)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_tg74y")

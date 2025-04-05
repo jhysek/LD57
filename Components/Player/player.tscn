@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://dd5r65nviv8nj"]
+[gd_scene load_steps=7 format=3 uid="uid://dd5r65nviv8nj"]
 
 [ext_resource type="Script" path="res://Components/Player/player.gd" id="1_pvmcb"]
 [ext_resource type="Texture2D" uid="uid://cffbs0ucgyc35" path="res://icon.svg" id="2_2712v"]
@@ -14,7 +14,10 @@ _data = {
 "Jump": SubResource("Animation_0rjy2")
 }
 
-[node name="Player" type="CharacterBody2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_m218a"]
+radius = 21.0
+
+[node name="Player" type="CharacterBody2D" groups=["Player"]]
 script = ExtResource("1_pvmcb")
 
 [node name="Visual" type="Node2D" parent="."]
@@ -32,3 +35,11 @@ shape = SubResource("CircleShape2D_d8vk6")
 libraries = {
 "": SubResource("AnimationLibrary_6klrn")
 }
+
+[node name="Collider" type="Area2D" parent="." groups=["Player"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collider"]
+shape = SubResource("CircleShape2D_m218a")
+
+[connection signal="area_entered" from="Collider" to="." method="_on_collider_area_entered"]
+[connection signal="area_exited" from="Collider" to="." method="_on_collider_area_exited"]
