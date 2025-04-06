@@ -9,7 +9,6 @@ func _ready() -> void:
 	pass # Replace with function body.
 
 func update_iridium(new_count):
-	print("UPDATING IRID")
 	iridium = new_count
 	var iridium_count = $IridiumCount
 	iridium_count.text = str(iridium)

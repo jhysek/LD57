@@ -29,7 +29,8 @@ func _on_area_2d_body_exited(body: Node2D) -> void:
 
 func hit(damage):
 	hp -= damage
-	print("BASE HIT! " + str(hp))
+	$AnimationPlayer.play("Hit")
+	$Sfx/Hit.play()
 	if hp < $ProgressBar.max_value:
 		$ProgressBar.visible = true
 

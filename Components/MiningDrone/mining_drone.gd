@@ -5,6 +5,8 @@ var map: TileMapLayer
 @export var speed = 100
 @export var mining_time = 5
 @export var resource_carry = 1
+@export var hp = 10
+@export var type = "iridium"
 
 signal resource_offloaded(resource_type)
 
@@ -24,9 +26,17 @@ var cooldown = 1
 var route = []
 var target = null
 
-func init(world_map, base_pos):
+func init(world_map, base_pos, resource):
+	type = resource
 	map = world_map
 	base_map_position = map.world_to_map(base_pos)
+
+	if resource == "iridium":
+		$Body/iridium.show()
+	if resource == "crystal":
+		$Body/crystal.show()
+
+	assert(resource == "iridium" || resource == "crystal", "Invalid resource type for drone! '" + str(type) + "'")
 
 	if map:
 		state = State.IDLE
@@ -54,23 +64,16 @@ func _process(delta: float) -> void:
 func idle_handler(delta):
 	cooldown -= delta
 	if cooldown <= 0:
-		print("IDLE... looking for a resource...")
-		var resource_tile_position = map.get_resource_tile_neighbor()
+		var resource_tile_position = map.get_resource_tile_neighbor(type)
 
 		if resource_tile_position:
 			cooldown = 1
-			print("RESOURCE FOUND: " + str(resource_tile_position))
 			state = State.APPROACHING_RESOURCE
 			route = map.get_nearest_path(map.world_to_map(position), resource_tile_position)
-			print("NEAREST PATH: " + str(route))
 
 			if route.size() > 0:
 				target = map.map_to_world(route.pop_front())
-
-				print("TARGET: " + str(target))
-				print("ROUTE: " + str(route))
 			else:
-				print("NO ROUTE....  idling")
 				state = State.IDLE
 
 
@@ -83,7 +86,6 @@ func approaching_resource_handler(delta):
 			if route.size() > 0:
 				target = map.map_to_world(route.pop_front())
 			else:
-				print("NO MORE ROUTE: " + str(route) + " I guess I should mine now....")
 				target = null
 				state = State.MINING
 				cooldown = mining_time
@@ -98,10 +100,18 @@ func approaching_base_handler(delta):
 				target = map.map_to_world(route.pop_front())
 			else:
 				target = null
-				emit_signal("resource_offloaded", "iridium")
+				emit_signal("resource_offloaded", type)
 				state = State.IDLE
 				cooldown = 1
 
+func hit(damage):
+	hp -= damage
+	if hp <= 0:
+		die()
+
+func die():
+	# TODO: explosion
+	queue_free()
 
 func mining_handler(delta):
 	if dig_cooldown >= 0:

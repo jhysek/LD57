@@ -1,12 +1,84 @@
-[gd_scene load_steps=3 format=3 uid="uid://c3gmqx7x8da18"]
+[gd_scene load_steps=9 format=3 uid="uid://c3gmqx7x8da18"]
 
 [ext_resource type="Script" path="res://Components/MiningDrone/mining_drone.gd" id="1_77uev"]
-[ext_resource type="Texture2D" uid="uid://cffbs0ucgyc35" path="res://icon.svg" id="2_tg74y"]
+[ext_resource type="Texture2D" uid="uid://wapeh88jiqyg" path="res://Components/MiningDrone/body.png" id="2_7pwls"]
+[ext_resource type="Texture2D" uid="uid://dqm2aw0e6mdx0" path="res://Components/MiningDrone/iridium.png" id="3_twxbf"]
+[ext_resource type="Texture2D" uid="uid://cdjcnrctaj342" path="res://Components/MiningDrone/crystal.png" id="4_e1oyv"]
 
-[node name="MiningDrone" type="Area2D" groups=["Player"]]
+[sub_resource type="CircleShape2D" id="CircleShape2D_437bt"]
+radius = 9.21954
+
+[sub_resource type="Animation" id="Animation_qgbe1"]
+resource_name = "Idle"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Body:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1.23114, 0.757858),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -5)]
+}
+
+[sub_resource type="Animation" id="Animation_4xplr"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Body:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lb6g4"]
+_data = {
+"Idle": SubResource("Animation_qgbe1"),
+"RESET": SubResource("Animation_4xplr")
+}
+
+[node name="MiningDrone" type="Area2D" groups=["Hittable", "Player"]]
 script = ExtResource("1_77uev")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-self_modulate = Color(0.672414, 8.66354e-07, 0.350444, 1)
-scale = Vector2(0.25, 0.25)
-texture = ExtResource("2_tg74y")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_437bt")
+
+[node name="Body" type="Sprite2D" parent="."]
+scale = Vector2(0.03, 0.03)
+texture = ExtResource("2_7pwls")
+
+[node name="iridium" type="Sprite2D" parent="Body"]
+visible = false
+light_mask = 2
+visibility_layer = 2
+position = Vector2(16.6666, 9.75)
+scale = Vector2(0.856458, 2.2094)
+texture = ExtResource("3_twxbf")
+
+[node name="crystal" type="Sprite2D" parent="Body"]
+visible = false
+light_mask = 2
+visibility_layer = 2
+position = Vector2(-3.36965e-05, 9.75)
+scale = Vector2(0.890716, 2.2094)
+texture = ExtResource("4_e1oyv")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_lb6g4")
+}
+autoplay = "Idle"
+
+[node name="Sfx" type="Node" parent="."]
+
+[node name="Drill" type="AudioStreamPlayer" parent="Sfx"]
+
+[node name="Swim" type="AudioStreamPlayer" parent="Sfx"]

@@ -183,27 +183,47 @@ func get_nearest_path(from, to):
 	return Array(nav.get_point_path(get_cell_id_vec(Vector2(from.x, from.y)), get_cell_id_vec(Vector2(to.x, to.y))))
 
 
-# TODO: multiple resource types....
-func get_resource_tile_neighbor():
+func get_resource_tile_neighbor(resource_type):
 	var resource_cells = []
+	var resource_id = null
 
-	for resource_id in RESOURCE_IDS:
-		resource_cells = resource_cells + get_used_cells_by_id(resource_id)
+	if resource_type == "iridium":
+		resource_id = RESOURCE_IRIDIUM
+
+	if resource_type == "crystal":
+		resource_id = RESOURCE_CRYSTAL
+
+	if !resource_id:
+		return null
+
+	resource_cells = resource_cells + get_used_cells_by_id(resource_id)
 
 	if resource_cells.is_empty():
 		return null
 
 	for resource in resource_cells:
 		if accessible_cell(resource + Vector2i.UP):
-			return resource + Vector2i.UP
+			return {
+				resource = resource,
+				neighbor = resource + Vector2i.UP
+			}
 
 		if accessible_cell(resource + Vector2i.DOWN):
-			return resource + Vector2i.DOWN
+			return {
+				neighbor = resource + Vector2i.DOWN,
+				resource = resource
+			}
 
 		if accessible_cell(resource + Vector2i.LEFT):
-			return resource + Vector2i.LEFT
+			return {
+				resource = resource,
+				neighbor = resource + Vector2i.LEFT
+			}
 
 		if accessible_cell(resource + Vector2i.RIGHT):
-			return resource + Vector2i.RIGHT
+			return {
+				resource = resource,
+				neighbor = resource + Vector2i.RIGHT
+			}
 
 	return null

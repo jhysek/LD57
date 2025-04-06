@@ -15,7 +15,6 @@ func update_oxygen_tank_secods(new_value):
 	CAPACITY = character.parameters.oxygen_tank_seconds
 
 func on_oxygen_mode_changed(depleting: bool):
-	print("Depleting oxygen: " + str(depleting))
 	oxygen_depleting = depleting
 
 func set_remains(new_value):
@@ -26,10 +25,13 @@ func set_remains(new_value):
 func on_process(delta):
 	if oxygen_depleting:
 		remains -= delta
+		if remains <= 0:
+			remains = 0
+			character.hit(3 * delta)
 		character.emit_signal("oxygen_level_changed", remains)
 
 	else:
-		remains += delta * 4
+		remains += delta * 5
 		if remains > CAPACITY:
 			remains = CAPACITY
 		character.emit_signal("oxygen_level_changed", remains)

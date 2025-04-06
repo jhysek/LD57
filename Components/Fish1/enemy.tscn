@@ -1,0 +1,191 @@
+[gd_scene load_steps=12 format=3 uid="uid://c143ay6eb7bi4"]
+
+[ext_resource type="Script" path="res://Components/Fish1/enemy.gd" id="1_vt2kg"]
+[ext_resource type="Texture2D" uid="uid://m0lejaxd8n6s" path="res://Components/Fish1/body.png" id="2_oue60"]
+[ext_resource type="Texture2D" uid="uid://dppc1kh0b6fnh" path="res://Components/Fish1/jaw.png" id="3_brys2"]
+[ext_resource type="PackedScene" uid="uid://be4d4hmhr8550" path="res://Components/BloodSplash/blood_splash.tscn" id="3_hwnlu"]
+[ext_resource type="PackedScene" uid="uid://dbjmjh6p7o6jt" path="res://Components/Health/health.tscn" id="5_fmwyj"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_d15lw"]
+radius = 22.0227
+
+[sub_resource type="Animation" id="Animation_pfrrj"]
+resource_name = "Attack"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visual/Body/Jaw:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.133333, 0.266667, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.0, -0.633272, 0.234558, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visual/Body:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.133333, 0.266667),
+"transitions": PackedFloat32Array(1, 0.25, 1),
+"update": 0,
+"values": [Vector2(2.27374e-13, -9.09495e-13), Vector2(-15, 0), Vector2(2.27374e-13, -9.09495e-13)]
+}
+
+[sub_resource type="Animation" id="Animation_thmd6"]
+resource_name = "Hit"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visual/Body:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.24, 0.24), Vector2(0.2, 0.24), Vector2(0.24, 0.24)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visual/Body/Jaw:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, -0.486889, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_qigd5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visual/Body:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.24, 0.24)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visual/Body/Jaw:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Visual/Body:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(2.27374e-13, -9.09495e-13)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Visual/Body:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [3.11579]
+}
+
+[sub_resource type="Animation" id="Animation_inwd6"]
+resource_name = "Swimming"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visual/Body/Jaw:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, -0.189121]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visual/Body:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [3.11579, 3.23338]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_abb33"]
+_data = {
+"Attack": SubResource("Animation_pfrrj"),
+"Hit": SubResource("Animation_thmd6"),
+"RESET": SubResource("Animation_qigd5"),
+"Swimming": SubResource("Animation_inwd6")
+}
+
+[node name="Fish1" type="Area2D" groups=["Enemy", "Hittable"]]
+script = ExtResource("1_vt2kg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_d15lw")
+
+[node name="Visual" type="Node2D" parent="."]
+scale = Vector2(0.25, 0.25)
+
+[node name="Body" type="Sprite2D" parent="Visual"]
+light_mask = 2
+visibility_layer = 2
+position = Vector2(2.27374e-13, -9.09495e-13)
+rotation = 3.11579
+scale = Vector2(0.24, 0.24)
+texture = ExtResource("2_oue60")
+offset = Vector2(290.339, -9.64171)
+
+[node name="Jaw" type="Sprite2D" parent="Visual/Body"]
+position = Vector2(166.667, 166.667)
+texture = ExtResource("3_brys2")
+offset = Vector2(-175, -41.6667)
+
+[node name="Splash" parent="." instance=ExtResource("3_hwnlu")]
+scale = Vector2(0.2, 0.2)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_abb33")
+}
+autoplay = "Swimming"
+
+[node name="Sfx" type="Node" parent="."]
+
+[node name="Health" parent="." instance=ExtResource("5_fmwyj")]
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

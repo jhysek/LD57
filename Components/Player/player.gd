@@ -29,6 +29,9 @@ func _ready():
 	assert(animation, "AnimationPlayer is missing?!")
 	assert(map, "Please connect map to player")
 	assert(game, "Please assign game")
+	$Health.max_value = hp
+	$Health.value = hp
+	$Health.hide()
 
 func upgrade_parameter(parameter_name, new_value):
 	if parameter_name == "oxygen_tank_seconds":
@@ -40,10 +43,12 @@ func hit(damage):
 		return
 
 	hp -= damage
+	$Health.show()
+	$Health.value = hp
 
-	print("PLAYER HIT. HP: " + str(hp))
 	if hp <= 0:
 		hp = 0
+		$Health.hide()
 		die()
 
 func shoot():
@@ -51,6 +56,8 @@ func shoot():
 	bullet.position = $Visual/Body/ArmRight/Spawner.global_position
 	get_node("/root/Game").add_child(bullet)
 	bullet.fire($Collider, bullet.position.direction_to(get_global_mouse_position()), game.parameters.fire_damage)
+	$Sfx/Shoot.pitch_scale = randf_range(0.95, 1.05)
+	$Sfx/Shoot.play()
 
 func die():
 	print("PLAYER DIED")

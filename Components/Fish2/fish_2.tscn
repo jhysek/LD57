@@ -1,0 +1,207 @@
+[gd_scene load_steps=12 format=3 uid="uid://ceph1gshk8dji"]
+
+[ext_resource type="Script" path="res://Components/Fish1/enemy.gd" id="1_qnyhe"]
+[ext_resource type="Texture2D" uid="uid://ctkgrjmlw76vv" path="res://Components/Fish2/body.png" id="2_0xfh0"]
+[ext_resource type="Texture2D" uid="uid://dtvlvk81egph0" path="res://Components/Fish2/jaw.png" id="3_p7d3o"]
+[ext_resource type="PackedScene" uid="uid://be4d4hmhr8550" path="res://Components/BloodSplash/blood_splash.tscn" id="4_ltfsv"]
+
+[sub_resource type="Animation" id="Animation_pfrrj"]
+resource_name = "Attack"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visual/Body/Jaw:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.133333, 0.266667, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.0, -0.633272, 0.234558, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visual/Body:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.133333, 0.266667),
+"transitions": PackedFloat32Array(1, 0.25, 1),
+"update": 0,
+"values": [Vector2(2.27374e-13, -9.09495e-13), Vector2(-15, 0), Vector2(2.27374e-13, -9.09495e-13)]
+}
+
+[sub_resource type="Animation" id="Animation_thmd6"]
+resource_name = "Hit"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visual/Body:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.24, 0.24), Vector2(0.2, 0.24), Vector2(0.24, 0.24)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visual/Body/Jaw:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, -0.486889, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_qigd5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visual/Body:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.24, 0.24)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visual/Body/Jaw:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Visual/Body:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(2.27374e-13, -9.09495e-13)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Visual/Body:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [3.11579]
+}
+
+[sub_resource type="Animation" id="Animation_inwd6"]
+resource_name = "Swimming"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visual/Body/Jaw:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, -0.189121]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visual/Body:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [3.11579, 3.23338]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_abb33"]
+_data = {
+"Attack": SubResource("Animation_pfrrj"),
+"Hit": SubResource("Animation_thmd6"),
+"RESET": SubResource("Animation_qigd5"),
+"Swimming": SubResource("Animation_inwd6")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vc21c"]
+radius = 60.0333
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1bvbd"]
+bg_color = Color(0.282353, 0.768627, 1, 1)
+
+[node name="Fish2" type="Area2D" groups=["Enemy", "Hittable"]]
+script = ExtResource("1_qnyhe")
+attack_speed = 2
+attack_damage = 2
+speed = 30
+hp = 10
+
+[node name="Visual" type="Node2D" parent="."]
+position = Vector2(-44, 12)
+scale = Vector2(0.5, 0.5)
+
+[node name="Body" type="Sprite2D" parent="Visual"]
+light_mask = 2
+visibility_layer = 2
+position = Vector2(2.27374e-13, -9.09495e-13)
+rotation = 3.11579
+scale = Vector2(0.24, 0.24)
+texture = ExtResource("2_0xfh0")
+offset = Vector2(290.339, -9.64171)
+
+[node name="Jaw" type="Sprite2D" parent="Visual/Body"]
+position = Vector2(-188.432, 195.203)
+texture = ExtResource("3_p7d3o")
+offset = Vector2(-173.167, 10.6454)
+
+[node name="Splash" parent="." instance=ExtResource("4_ltfsv")]
+scale = Vector2(0.2, 0.2)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_abb33")
+}
+autoplay = "Swimming"
+
+[node name="Sfx" type="Node" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-18, 7)
+shape = SubResource("CircleShape2D_vc21c")
+
+[node name="Health" type="ProgressBar" parent="."]
+light_mask = 2
+visibility_layer = 2
+offset_left = -36.0
+offset_top = -67.0
+offset_right = 37.0
+offset_bottom = -62.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_1bvbd")
+show_percentage = false
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

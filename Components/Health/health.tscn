@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://dbjmjh6p7o6jt"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xf4qq"]
+bg_color = Color(0.283916, 0.766696, 1, 1)
+
+[node name="Health" type="ProgressBar"]
+light_mask = 2
+visibility_layer = 2
+offset_left = -27.0
+offset_top = -42.0
+offset_right = 27.0
+offset_bottom = -38.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_xf4qq")
+value = 50.0
+show_percentage = false

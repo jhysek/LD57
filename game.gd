@@ -18,7 +18,11 @@ var parameters = {
 	crystal_bots_carry = 1,
 	oxygen_tank_seconds = oxygen_tank_seconds,
 	drill_damage = 1,
-	fire_damage = 1
+	fire_damage = 1,
+
+	drone_damage = 1,
+	drone_attack_cooldown = 2,
+	drone_max_shots = 1
 }
 
 var inventory = {
@@ -142,8 +146,26 @@ func _ready():
 
 	player.upgrade_parameter("oxygen_tank_seconds", parameters.oxygen_tank_seconds)
 	$UI/Indicators.set_oxygen_max(parameters.oxygen_tank_seconds)
+	$UI/Indicators.update_crystals(inventory.crystal)
+	$UI/Indicators.update_iridium(inventory.iridium)
 
-	$Enemy.activate($Base)
+	$Fish1.activate($Base)
+	$Fish2.activate($Base)
+	$Fish3.activate($Base)
+	$Fish4.activate($Base)
+	$Fish5.activate($Base)
+	$Fish6.activate($Base)
+
+	$MiningDrone.init(map, $Base.global_position, "iridium")
+	$MiningDrone.resource_offloaded.connect(func(amount):
+		update_inventory($MiningDrone.type, parameters.iridium_bots_carry)
+		)
+	$MiningDrone2.init(map, $Base.global_position, "crystal")
+	$MiningDrone2.resource_offloaded.connect(func(amount):
+		update_inventory($MiningDrone2.type, parameters.crystal_bots_carry)
+		)
+	$DefensiveDrone.init(self)
+
 	initialize_deals()
 
 
@@ -232,7 +254,8 @@ func _input(event):
 
 		if current_tile and map.are_neighbors(player_map_pos, current_tile):
 			map.hit(current_tile, player.parameters.mining_damage)
-		else:
+
+		if !current_tile:
 			player.shoot()
 
 func _on_player_oxygen_level_changed(new_value: float) -> void:

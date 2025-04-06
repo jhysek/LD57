@@ -17,6 +17,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_733jt")
 script = ExtResource("1_u6qbp")
 
 [node name="Label" type="Label" parent="."]
+visible = false
 layout_mode = 0
 offset_left = 5.0
 offset_top = 1.0
