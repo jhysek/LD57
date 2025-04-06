@@ -71,10 +71,10 @@ var deals = [
 		title = "Drill   efficiency",
 		level = 0,
 		max_levels = 10,
-		price_iridium = 20,
-		price_crystals = 5,
-		iridium_multiplier = 1.3,
-		crystal_multiplier = 1.5,
+		price_iridium = 5,
+		price_crystals = 2,
+		iridium_multiplier = 1.1,
+		crystal_multiplier = 1.1,
 		parameter_name = "drill_damage",
 		parameter_addition = 1,
 		node = null
@@ -84,15 +84,14 @@ var deals = [
 		title = "Weapon   damage",
 		level = 0,
 		max_levels = 10,
-		price_iridium = 20,
+		price_iridium = 15,
 		price_crystals = 5,
-		iridium_multiplier = 1.3,
-		crystal_multiplier = 1.5,
+		iridium_multiplier = 1.2,
+		crystal_multiplier = 1.3,
 		parameter_name = "fire_damage",
 		parameter_addition = 1,
 		node = null
 	},
-
 
 
 	{
@@ -100,7 +99,7 @@ var deals = [
 		level = 0,
 		price_iridium = 20,
 		price_crystals = 0,
-		iridium_multiplier = 1.2,
+		iridium_multiplier = 1.1,
 		crystal_multiplier = 1,
 		action = "iridium_bot",
 		node = null
@@ -111,7 +110,7 @@ var deals = [
 		level = 0,
 		price_iridium = 20,
 		price_crystals = 10,
-		iridium_multiplier = 1.2,
+		iridium_multiplier = 1,
 		crystal_multiplier = 1.14,
 		action = "crystal_bot",
 		node = null
@@ -126,14 +125,14 @@ var deals = [
 		iridium_multiplier = 1.25,
 		crystal_multiplier = 1.01,
 		parameter_name = "drone_carry_amount",
-		parameter_multiplier = 1.16,
+		parameter_addition = 1,
 		node = null
 	},
 
 	{
 		title = "Defensive   drone",
 		level = 0,
-		price_iridium = 20,
+		price_iridium = 15,
 		price_crystals = 5,
 		iridium_multiplier = 1.2,
 		crystal_multiplier = 1.3,
@@ -145,7 +144,7 @@ var deals = [
 		title = "Drone  shooting  speed",
 		level = 0,
 		max_levels = 10,
-		price_iridium = 10,
+		price_iridium = 6,
 		price_crystals = 5,
 		iridium_multiplier = 1.25,
 		crystal_multiplier = 1.01,
@@ -247,8 +246,6 @@ func purchase(deal):
 
 			if deal.has("parameter_addition"):
 				parameters[deal.parameter_name] += deal.parameter_addition
-
-				print(parameters[deal.parameter_name])
 
 			if deal.parameter_name == "player_inventory_size":
 				player_inventory.refresh()

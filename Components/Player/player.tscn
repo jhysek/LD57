@@ -375,6 +375,7 @@ scale_amount_max = 0.09
 
 [node name="BubbleTimer" type="Timer" parent="."]
 wait_time = 4.0
+one_shot = true
 autostart = true
 
 [node name="Health" parent="." instance=ExtResource("12_518ue")]

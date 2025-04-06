@@ -85,7 +85,7 @@ func _process(delta: float) -> void:
 	if state == State.HITTED:
 		attack_cooldown -= delta
 		if attack_cooldown <= 0:
-			state = prev_state
+			state = State.ACTIVE
 
 	if state == State.ATTACKING or state == State.ATTACKING_BASE:
 		attack_cooldown -= delta

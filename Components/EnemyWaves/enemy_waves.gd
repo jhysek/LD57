@@ -19,7 +19,7 @@ enum State {
 }
 
 var waves = [
-  { delay = 10, enemies = [1, 1] },
+  { delay = 30, enemies = [1, 1] },
   { delay = 33, enemies = [1, 1, 1] },
   { delay = 36, enemies = [1, 1, 1, 1] },
   { delay = 40, enemies = [1, 1, 1, 1, 1] },

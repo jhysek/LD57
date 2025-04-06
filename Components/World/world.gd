@@ -119,10 +119,10 @@ func decrease_resource_amount(type, map_pos, by_amount = 1):
 			resources[type][map_pos].indicator_node.update_amount(resources[type][map_pos].remaining)
 			if resources[type][map_pos].remaining <= 0:
 				resources[type][map_pos].indicator_node = null
-				resources[type].erase(map_pos)
 
 		if resources[type][map_pos].remaining <= 0:
 			set_cell(map_pos, CELL_EMPTY, Vector2.ZERO)
+			resources[type].erase(map_pos)
 	else:
 		print("No " + type + " at " + str(map_pos))
 

@@ -137,7 +137,10 @@ func _on_collider_area_exited(area: Area2D) -> void:
 
 func _on_bubble_timer_timeout() -> void:
 	$BubbleParticles.emitting = true
+	$BubbleTimer.wait_time = randi_range(4, 10)
 	if randi_range(0,10) >= 5:
+		$Sfx/Bubble1.pitch_scale = randf_range(0.9, 1.1)
 		$Sfx/Bubble1.play()
 	else:
+		$Sfx/Bubble1.pitch_scale = randf_range(0.9, 1.1)
 		$Sfx/Bubble2.play()

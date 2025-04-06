@@ -95,9 +95,7 @@ func attacking_handler(delta):
 	cooldown -= delta
 
 	if cooldown <= 0:
-
 		cooldown = 5 - game.parameters.shoot_speed
-		print("COOLDOWN: " + str(cooldown))
 		shoot()
 
 func shoot():
