@@ -79,6 +79,15 @@ func reveal_resource(digged_map_pos):
 		if are_neighbors(digged_map_pos, crystal):
 			set_cell(crystal, RESOURCE_CRYSTAL, Vector2.ZERO)
 
+func decrease_resource_amount(type, map_pos, by_amount):
+	if type == "iridium" and resources.iridium.has(map_pos):
+		resources.iridium[map_pos].remaining -= by_amount
+		if resources.iridium[map_pos].indicator_node:
+			resources.iridium[map_pos].indicator_node.update_amount(resources.iridium[map_pos].remaining)
+
+		if resources.iridium[map_pos].remaining <= 0:
+			set_cell(map_pos, CELL_EMPTY, Vector2.ZERO)
+
 func is_breakable(map_pos: Vector2):
 	var cell_id = get_cell(map_pos)
 	return cell_id >= 0 && cell_id != CELL_UNBREAKABLE

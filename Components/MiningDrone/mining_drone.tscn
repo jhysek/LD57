@@ -82,3 +82,5 @@ autoplay = "Idle"
 [node name="Drill" type="AudioStreamPlayer" parent="Sfx"]
 
 [node name="Swim" type="AudioStreamPlayer" parent="Sfx"]
+
+[node name="Dig" type="AudioStreamPlayer" parent="Sfx"]

@@ -16,6 +16,7 @@ var paused = false
 var parameters = {
 	iridium_bots_carry = 1,
 	crystal_bots_carry = 1,
+
 	oxygen_tank_seconds = oxygen_tank_seconds,
 	drill_damage = 1,
 	fire_damage = 1,
@@ -149,12 +150,12 @@ func _ready():
 	$UI/Indicators.update_crystals(inventory.crystal)
 	$UI/Indicators.update_iridium(inventory.iridium)
 
-	$Fish1.activate($Base)
-	$Fish2.activate($Base)
-	$Fish3.activate($Base)
-	$Fish4.activate($Base)
-	$Fish5.activate($Base)
-	$Fish6.activate($Base)
+	#$Fish1.activate($Base)
+	#$Fish2.activate($Base)
+	#$Fish3.activate($Base)
+	#$Fish4.activate($Base)
+	#$Fish5.activate($Base)
+	#$Fish6.activate($Base)
 
 	$MiningDrone.init(map, $Base.global_position, "iridium")
 	$MiningDrone.resource_offloaded.connect(func(amount):
