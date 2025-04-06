@@ -90,9 +90,10 @@ func init_resources():
 
 func reveal_resource(digged_map_pos):
 	for iridium in resources.iridium:
-		if are_neighbors(digged_map_pos, iridium):
-			set_cell(iridium, RESOURCE_IRIDIUM, Vector2.ZERO)
-			add_indicator(iridium, "iridium")
+		if resources.iridium[iridium].remaining > 0:
+			if are_neighbors(digged_map_pos, iridium):
+				set_cell(iridium, RESOURCE_IRIDIUM, Vector2.ZERO)
+				add_indicator(iridium, "iridium")
 
 	for crystal in resources.crystal:
 		if are_neighbors(digged_map_pos, crystal):
@@ -118,6 +119,7 @@ func decrease_resource_amount(type, map_pos, by_amount = 1):
 			resources[type][map_pos].indicator_node.update_amount(resources[type][map_pos].remaining)
 			if resources[type][map_pos].remaining <= 0:
 				resources[type][map_pos].indicator_node = null
+				resources[type].erase(map_pos)
 
 		if resources[type][map_pos].remaining <= 0:
 			set_cell(map_pos, CELL_EMPTY, Vector2.ZERO)
@@ -164,6 +166,8 @@ func handle_mining(map_pos, hp = 1):
 			emit_signal("resource_mined", type)
 
 func dig_effect(map_pos):
+	$Sfx/Dig.pitch_scale = randf_range(0.95, 1.05)
+	$Sfx/Dig.play()
 	var particles = Particles.instantiate()
 	particles.position = map_to_world(map_pos)
 	add_child(particles)

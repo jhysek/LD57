@@ -50,7 +50,7 @@ func heal(diff):
 
 func hit(damage):
 	hp -= damage
-	print("BASE HIT")
+
 	$AnimationPlayer.play("Hit")
 	$Sfx/Hit.play()
 	if hp < $ProgressBar.max_value:

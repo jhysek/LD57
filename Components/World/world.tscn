@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=4 uid="uid://t8m27nso7117"]
+[gd_scene load_steps=20 format=4 uid="uid://t8m27nso7117"]
 
 [ext_resource type="Script" path="res://Components/World/world.gd" id="1_151e2"]
 [ext_resource type="Texture2D" uid="uid://dogys0uadblye" path="res://Assets/tile.png" id="2_g6qkh"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://dejh04jp45riy" path="res://Assets/unreakable2.png" id="6_h6cy5"]
 [ext_resource type="Texture2D" uid="uid://cimr4pkpsg7jo" path="res://Assets/resource.png" id="7_m82q2"]
 [ext_resource type="Texture2D" uid="uid://skd6crutlfi0" path="res://Assets/crystals.png" id="8_36i6e"]
+[ext_resource type="AudioStream" uid="uid://c2ekfv3hesr85" path="res://Components/Player/dig.wav" id="10_o5di6"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wnxiu"]
 texture = ExtResource("2_g6qkh")
@@ -76,3 +77,8 @@ position = Vector2(0, 1)
 tile_map_data = PackedByteArray("AAAEAAYAAgAAAAAAAAAFAAYAAgAAAAAAAAAFAAUAAQAAAAAAAAAFAAQAAgAAAAAAAAAGAAYAAgAAAAAAAAAGAAUAAgAAAAAAAAAGAAQAAgAAAAAAAAAHAAQAAgAAAAAAAAAIAAQAAgAAAAAAAAAJAAQAAgAAAAAAAAAJAAUAAgAAAAAAAAAKAAUAAQAAAAAAAAAIAAUAAgAAAAAAAAAHAAUAAgAAAAAAAAAHAAYAAgAAAAAAAAAIAAYAAgAAAAAAAAAJAAYAAgAAAAAAAAAKAAcAAQAAAAAAAAAJAAcAAQAAAAAAAAAIAAcAAgAAAAAAAAAJAAMAAgAAAAAAAAAIAAMAAgAAAAAAAAAHAAMAAgAAAAAAAAAGAAMAAgAAAAAAAAAFAAMAAgAAAAAAAAAEAAMAAQAAAAAAAAAFAAIAAQAAAAAAAAAEAAIAAQAAAAAAAAADAAIAAQAAAAAAAAACAAIAAQAAAAAAAAADAAMAAQAAAAAAAAAGAAIAAQAAAAAAAAAHAAIAAQAAAAAAAAAIAAIAAQAAAAAAAAAIAAEAAQAAAAAAAAAHAAEAAQAAAAAAAAAGAAEAAQAAAAAAAAABAAIAAQAAAAAAAAACAAMAAQAAAAAAAAAEAAQAAQAAAAAAAAAEAAUAAQAAAAAAAAALAAYAAQAAAAAAAAALAAcAAQAAAAAAAAAMAAcAAQAAAAAAAAANAAcAAQAAAAAAAAANAAgAAQAAAAAAAAAMAAgAAQAAAAAAAAALAAgAAQAAAAAAAAAKAAgAAQAAAAAAAAAKAAYAAQAAAAAAAAALAAUAAQAAAAAAAAAMAAYAAQAAAAAAAAA=")
 tile_set = SubResource("TileSet_c8l0l")
 script = ExtResource("1_151e2")
+
+[node name="Sfx" type="Node" parent="."]
+
+[node name="Dig" type="AudioStreamPlayer" parent="Sfx"]
+stream = ExtResource("10_o5di6")

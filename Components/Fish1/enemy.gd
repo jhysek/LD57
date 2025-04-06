@@ -52,7 +52,7 @@ func hit(damage):
 	prev_state = state
 	state = State.HITTED
 	$AnimationPlayer.play("Hit")
-	attack_cooldown = 0.5
+	attack_cooldown = randf_range(0,0.5)
 	$Health.value = hp
 	if hp <= 0:
 		$Health.hide()

@@ -14,6 +14,7 @@ signal resource_offloaded(resource_type)
 var dig_cooldown = 1
 
 const IRIDIUM_UNIT_HP = 5
+const CRYSTAL_UNIT_HP = 10
 
 enum State {
 	INITIALIZING,
@@ -132,16 +133,17 @@ func mining_handler(delta):
 	if cooldown >= 0:
 		cooldown -= delta
 	else:
-		print("DIGGING AT " + str(digging_at))
 		if digging_at:
 			map.dig_effect(digging_at)
 		$Sfx/Dig.play()
 		resources += 1
-		cooldown = IRIDIUM_UNIT_HP / game.parameters.drill_damage
+		if type == "iridium":
+			cooldown = IRIDIUM_UNIT_HP / game.parameters.drill_damage
+		if type == "crystal":
+			cooldown = CRYSTAL_UNIT_HP / game.parameters.drill_damage
 		map.decrease_resource_amount(type, digging_at, 1)
 
-		if resources >= game.parameters.iridium_bots_carry:
-			print("FULL, returning back to base")
+		if resources >= game.parameters.drone_carry_amount:
 			digging_at = null
 			state = State.APPROACHING_BASE
 			route = map.get_nearest_path(map.world_to_map(position), base_map_position)

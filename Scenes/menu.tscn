@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=4 uid="uid://cyowi8qvb8c5c"]
+[gd_scene load_steps=19 format=4 uid="uid://cyowi8qvb8c5c"]
 
 [ext_resource type="Texture2D" uid="uid://qskmspq0d5ka" path="res://Assets/blue.png" id="1_e4p2c"]
 [ext_resource type="Script" path="res://Scenes/menu.gd" id="1_vedl7"]
@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://b0o6tvme1ca1e" path="res://Assets/plants.png" id="10_unhp1"]
 [ext_resource type="Texture2D" uid="uid://dvfltyvcyqhmf" path="res://Assets/rock01.png" id="11_2d5td"]
 [ext_resource type="Texture2D" uid="uid://cydpeygpb3xw2" path="res://Assets/light_ambient.png" id="12_k756o"]
+[ext_resource type="AudioStream" uid="uid://bl71785xnoins" path="res://Assets/music.ogg" id="13_ph175"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_1s1lx"]
 blend_mode = 1
@@ -131,5 +132,9 @@ offset_bottom = 1031.0
 mouse_filter = 2
 texture = ExtResource("2_iiqa8")
 stretch_mode = 1
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_ph175")
+autoplay = true
 
 [connection signal="pressed" from="Start" to="." method="_on_start_pressed"]

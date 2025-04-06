@@ -64,11 +64,14 @@ func idle_handler(delta):
 	if cooldown <= 0:
 		cooldown = randf_range(0.5, 1.5)
 		state = State.PATROLING
+		current_route_idx = randi_range(0, route.size() - 1) % route.size()
 		target = route[current_route_idx]
 		direction = position.direction_to(target)
+
 		for enemy in radar.get_overlapping_areas():
 			if enemy.is_in_group("Enemy"):
 				$Sfx/Detected.play()
+				cooldown = 5 - game.parameters.shoot_speed
 				state = State.ATTACKING
 
 func patroling_handler(delta):
@@ -85,13 +88,16 @@ func patroling_handler(delta):
 	for enemy in radar.get_overlapping_areas():
 		if enemy.is_in_group("Enemy"):
 			$Sfx/Detected.play()
+			cooldown = 5 - game.parameters.shoot_speed
 			state = State.ATTACKING
 
 func attacking_handler(delta):
 	cooldown -= delta
 
 	if cooldown <= 0:
+
 		cooldown = 5 - game.parameters.shoot_speed
+		print("COOLDOWN: " + str(cooldown))
 		shoot()
 
 func shoot():

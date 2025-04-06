@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://dd5r65nviv8nj"]
+[gd_scene load_steps=22 format=3 uid="uid://dd5r65nviv8nj"]
 
 [ext_resource type="Script" path="res://Components/Player/player.gd" id="1_pvmcb"]
 [ext_resource type="Texture2D" uid="uid://cxtub2kyacy3d" path="res://Components/Player/body.png" id="2_nxkdv"]
@@ -10,8 +10,10 @@
 [ext_resource type="Texture2D" uid="uid://cf287rvqx26uc" path="res://Assets/light.png" id="6_pl5va"]
 [ext_resource type="Texture2D" uid="uid://cb7ramec22lvk" path="res://Components/Player/gun.png" id="7_ht4fb"]
 [ext_resource type="AudioStream" uid="uid://c2ekfv3hesr85" path="res://Components/Player/dig.wav" id="9_eg8ll"]
+[ext_resource type="AudioStream" uid="uid://cw2uokcsjexer" path="res://Components/Player/bubble1.wav" id="9_mv2q0"]
 [ext_resource type="AudioStream" uid="uid://bkamf0d8bnk3j" path="res://Components/Player/shoot.wav" id="10_ytqse"]
 [ext_resource type="PackedScene" uid="uid://dbjmjh6p7o6jt" path="res://Components/Health/health.tscn" id="12_518ue"]
+[ext_resource type="AudioStream" uid="uid://bjpu0q63gqgt3" path="res://Components/Player/oxygen.wav" id="12_o6w4e"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_d8vk6"]
 radius = 16.5076
@@ -335,13 +337,20 @@ offset = Vector2(204, 188)
 
 [node name="Sfx" type="Node" parent="."]
 
-[node name="Bubble" type="AudioStreamPlayer" parent="Sfx"]
+[node name="Bubble1" type="AudioStreamPlayer" parent="Sfx"]
+stream = ExtResource("9_mv2q0")
+
+[node name="Bubble2" type="AudioStreamPlayer" parent="Sfx"]
+stream = ExtResource("9_mv2q0")
 
 [node name="Dig" type="AudioStreamPlayer" parent="Sfx"]
 stream = ExtResource("9_eg8ll")
 
 [node name="Shoot" type="AudioStreamPlayer" parent="Sfx"]
 stream = ExtResource("10_ytqse")
+
+[node name="Oxygen" type="AudioStreamPlayer" parent="Sfx"]
+stream = ExtResource("12_o6w4e")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

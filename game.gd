@@ -19,6 +19,7 @@ var goals_left = 2
 var parameters = {
 	player_inventory_size = 3,
 
+	# not used probably... drone_carry_amount is used for both
 	iridium_bots_carry = 1,
 	crystal_bots_carry = 1,
 
@@ -29,12 +30,13 @@ var parameters = {
 
 	drone_damage = 1,
 	drone_attack_cooldown = 2,
-	drone_max_shots = 1
+	drone_max_shots = 1,
+	drone_carry_amount  = 1
 }
 
 var inventory = {
-	iridium = 1000,
-	crystal = 500,
+	iridium = 10,
+	crystal = 5,
 	oxygen = oxygen_tank_seconds
 }
 
@@ -91,18 +93,7 @@ var deals = [
 		node = null
 	},
 
-	{
-		title = "Drone  shooting  speed",
-		level = 0,
-		max_levels = 10,
-		price_iridium = 5,
-		price_crystals = 5,
-		iridium_multiplier = 1.25,
-		crystal_multiplier = 1.01,
-		parameter_name = "shoot_speed",
-		parameter_multiplier = 1.19,
-		node = null
-	},
+
 
 	{
 		title = "Iridium   mining   drone",
@@ -127,6 +118,19 @@ var deals = [
 	},
 
 	{
+		title = "Drone  carry  amount",
+		level = 0,
+		max_levels = 10,
+		price_iridium = 10,
+		price_crystals = 5,
+		iridium_multiplier = 1.25,
+		crystal_multiplier = 1.01,
+		parameter_name = "drone_carry_amount",
+		parameter_multiplier = 1.16,
+		node = null
+	},
+
+	{
 		title = "Defensive   drone",
 		level = 0,
 		price_iridium = 20,
@@ -138,13 +142,26 @@ var deals = [
 	},
 
 	{
+		title = "Drone  shooting  speed",
+		level = 0,
+		max_levels = 10,
+		price_iridium = 10,
+		price_crystals = 5,
+		iridium_multiplier = 1.25,
+		crystal_multiplier = 1.01,
+		parameter_name = "shoot_speed",
+		parameter_multiplier = 1.16,
+		node = null
+	},
+
+	{
 		title = "Submarine   repair   10%",
 		level = 0,
 		price_iridium = 20,
 		price_crystals = 5,
 		iridium_multiplier = 1.1,
 		crystal_multiplier = 1.1,
-		parameter_name = "submarine_hp",
+		action = "repair_base",
 		parameter_addition = 10,
 		node = null
 	},
@@ -222,9 +239,11 @@ func purchase(deal):
 
 		if deal.has("parameter_name"):
 			assert(parameters.has(deal.parameter_name), "Parameters don't have '" + deal.parameter_name + "' refered by a deal.")
+
 			if deal.has("parameter_multiplier"):
+				print("Multiplicating " + deal.parameter_name)
 				parameters[deal.parameter_name] *= deal.parameter_multiplier
-				parameters[deal.parameter_name] = round(parameters[deal.parameter_name])
+				parameters[deal.parameter_name] = parameters[deal.parameter_name]
 
 			if deal.has("parameter_addition"):
 				parameters[deal.parameter_name] += deal.parameter_addition
@@ -233,6 +252,13 @@ func purchase(deal):
 
 			if deal.parameter_name == "player_inventory_size":
 				player_inventory.refresh()
+
+			if deal.parameter_name == "shoot_speed":
+				print("Current shoot speed: " + str(parameters.shoot_speed))
+
+			if deal.parameter_name == "oxygen_tank_seconds":
+				$UI/Indicators.set_oxygen_max(parameters.oxygen_tank_seconds)
+				#player.upgrade_parameter("oxygen_tank_seconds", parameters.oxygen_tank_seconds)
 
 		if deal.has("action"):
 			match deal.action:
@@ -244,6 +270,9 @@ func purchase(deal):
 
 				'defensive_bot':
 					deploy_defensive_bot()
+
+				'repair_base':
+					$Base.heal(deal.parameter_addition)
 
 				'goal_1':
 					$Base.fix()
@@ -267,24 +296,21 @@ func has_enough_resources(deal):
 	return inventory.iridium >= deal.price_iridium && inventory.crystal >= deal.price_crystals
 
 func deploy_mining_bot(type):
-	print("DEPLOYING bot for " + type)
 	var miner = MiningBot.instantiate()
-	miner.position = $Base.position
+	miner.position = $Base.position + Vector2(randi_range(-50, 50), randi_range(-50, 50))
 	add_child(miner)
 	miner.init(map, $Base.position, type)
 
 	miner.resource_offloaded.connect(func(type):
-		print("RESOURCE OFFLOADED: " + type)
 		if type == "iridium":
-			update_inventory(type, parameters.iridium_bots_carry)
+			update_inventory(type, parameters.drone_carry_amount)
 		if type == "crystal":
-			update_inventory(type, parameters.crystal_bots_carry)
+			update_inventory(type, parameters.drone_carry_amount)
 		)
 
 func deploy_defensive_bot():
-	print("instantiating")
 	var bot = DefensiveBot.instantiate()
-	bot.position = $Base.global_position - Vector2(0, 80)
+	bot.position = $Base.global_position - Vector2(0, 80) + Vector2(randi_range(-50, 50), randi_range(-50, 50))
 	add_child(bot)
 	var route = $PatrolRoute.get_children().map(func(marker): return marker.global_position)
 	bot.init(self, route)
@@ -324,10 +350,17 @@ func _on_button_pressed() -> void:
 	$Sfx/Click.play()
 	for deal in deals:
 		if paused:
+
 			deal.node.close()
 		else:
+
 			deal.node.open()
+
 	paused = !paused
+	if paused:
+		$UI/Upgrades/Button.text = "CLOSE   UPGRADES"
+	else:
+		$UI/Upgrades/Button.text = "OPEN   UPGRADES"
 
 func _on_map_resource_mined(type: Variant) -> void:
 	player_inventory.add(type)

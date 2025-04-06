@@ -116,12 +116,15 @@ func idle():
 	if !animation.current_animation == "Idle":
 		animation.play("Idle")
 
+func sfx(name):
+	$Sfx.get_node(name).play()
 
 func _on_collider_area_entered(area: Area2D) -> void:
 	if state == State.DEAD:
 		return
 
 	if area.is_in_group("AirSource"):
+		$Sfx/Oxygen.play()
 		emit_signal("oxygen_tank_using", false)
 
 func _on_collider_area_exited(area: Area2D) -> void:
@@ -134,4 +137,7 @@ func _on_collider_area_exited(area: Area2D) -> void:
 
 func _on_bubble_timer_timeout() -> void:
 	$BubbleParticles.emitting = true
-	$Sfx/Bubble.play()
+	if randi_range(0,10) >= 5:
+		$Sfx/Bubble1.play()
+	else:
+		$Sfx/Bubble2.play()
