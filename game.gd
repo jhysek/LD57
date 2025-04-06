@@ -18,7 +18,7 @@ var parameters = {
 	crystal_bots_carry = 1,
 	oxygen_tank_seconds = oxygen_tank_seconds,
 	drill_damage = 1,
-	weapon_damage = 1
+	fire_damage = 1
 }
 
 var inventory = {
@@ -61,7 +61,7 @@ var deals = [
 		price_crystals = 5,
 		iridium_multiplier = 1.3,
 		crystal_multiplier = 1.5,
-		parameter_name = "weapon_damage",
+		parameter_name = "fire_damage",
 		parameter_addition = 1,
 		node = null
 	},
@@ -143,6 +143,7 @@ func _ready():
 	player.upgrade_parameter("oxygen_tank_seconds", parameters.oxygen_tank_seconds)
 	$UI/Indicators.set_oxygen_max(parameters.oxygen_tank_seconds)
 
+	$Enemy.activate($Base)
 	initialize_deals()
 
 
@@ -231,6 +232,8 @@ func _input(event):
 
 		if current_tile and map.are_neighbors(player_map_pos, current_tile):
 			map.hit(current_tile, player.parameters.mining_damage)
+		else:
+			player.shoot()
 
 func _on_player_oxygen_level_changed(new_value: float) -> void:
 	inventory.oxygen = new_value

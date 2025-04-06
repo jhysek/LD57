@@ -1,131 +1,263 @@
-[gd_scene load_steps=12 format=3 uid="uid://dd5r65nviv8nj"]
+[gd_scene load_steps=17 format=3 uid="uid://dd5r65nviv8nj"]
 
 [ext_resource type="Script" path="res://Components/Player/player.gd" id="1_pvmcb"]
 [ext_resource type="Texture2D" uid="uid://cxtub2kyacy3d" path="res://Components/Player/body.png" id="2_nxkdv"]
 [ext_resource type="Texture2D" uid="uid://cvp6lr7h0nwxh" path="res://Components/Player/head.png" id="3_kpw55"]
 [ext_resource type="Texture2D" uid="uid://d1xkye0gmp4s5" path="res://Components/Player/hand.png" id="4_fcwmw"]
 [ext_resource type="Texture2D" uid="uid://ct7uo2yudy5f6" path="res://Components/Player/leg.png" id="4_kkjqb"]
+[ext_resource type="Texture2D" uid="uid://bkf2i3df2lkak" path="res://Components/Player/flashlight.png" id="5_ryqu1"]
+[ext_resource type="Texture2D" uid="uid://cto7k3dw0b3vg" path="res://Assets/bubble.png" id="6_bltpl"]
+[ext_resource type="Texture2D" uid="uid://cf287rvqx26uc" path="res://Assets/light.png" id="6_pl5va"]
+[ext_resource type="Texture2D" uid="uid://cb7ramec22lvk" path="res://Components/Player/gun.png" id="7_ht4fb"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_d8vk6"]
 radius = 16.5076
 
-[sub_resource type="Animation" id="Animation_0rjy2"]
-resource_name = "Jump"
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rj2v1"]
+radius = 10.5691
+height = 33.8989
 
 [sub_resource type="Animation" id="Animation_ss7x4"]
 resource_name = "Idle"
+length = 0.5
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Visual/Body/LegLeft:scale")
+tracks/0/path = NodePath("Visual/Body/LegLeft:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.558333, 0.8),
+"times": PackedFloat32Array(0, 0.133333, 0.266667, 0.4),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(1, 1), Vector2(0.75, 0.6), Vector2(1, 1), Vector2(1.2, 0.9)]
+"values": [0.633811, -0.0247206, 0.633811, 0.846866]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Visual/Body/LegRight:scale")
+tracks/1/path = NodePath("Visual/Body/LegRight:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.558333, 0.8),
+"times": PackedFloat32Array(0, 0.133333, 0.266667, 0.4),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(1, 1), Vector2(1.2, 0.9), Vector2(1, 1), Vector2(1, 0.6)]
+"values": [0.359347, 0.743507, 0.359538, -0.00573733]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Visual/Body/ArmLeft:rotation")
+tracks/2/path = NodePath("Visual/Body/ArmLeft:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.5),
+"times": PackedFloat32Array(0, 0.2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [0.0, 0.272798]
+"values": [Vector2(-280, 40), Vector2(-200, 160)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Visual/Body/ArmRight:rotation")
+tracks/3/path = NodePath("Visual/Body/ArmRight:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.5),
+"times": PackedFloat32Array(0, 0.2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [0.0, -0.336674]
+"values": [Vector2(40, 40), Vector2(-80, -120)]
 }
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Visual/Body/Head:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-80, -160), Vector2(-80, -40)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("AnimationPlayer:speed_scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.2]
+}
+
+[sub_resource type="Animation" id="Animation_0rjy2"]
+resource_name = "Jump"
 
 [sub_resource type="Animation" id="Animation_do1q2"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Visual/Body/LegLeft:scale")
+tracks/0/path = NodePath("Visual/Body/LegLeft:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(1, 1)]
+"values": [0.633811]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Visual/Body/LegRight:scale")
+tracks/1/path = NodePath("Visual/Body/LegRight:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(1, 1)]
+"values": [0.0]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Visual/Body/ArmLeft:rotation")
+tracks/2/path = NodePath("Visual/Body/ArmLeft:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [0.0]
+"values": [Vector2(-280, 40)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Visual/Body/ArmRight:rotation")
+tracks/3/path = NodePath("Visual/Body/ArmRight:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [0.0]
+"values": [Vector2(40, 40)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Visual/Body/Head:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-80, -160)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("AnimationPlayer:speed_scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.2]
+}
+
+[sub_resource type="Animation" id="Animation_n0emh"]
+resource_name = "Swim"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visual/Body/LegLeft:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.133333, 0.266667, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.633811, -0.0247206, 0.633811, 0.846866]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visual/Body/LegRight:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.133333, 0.266667, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.359347, 0.743507, 0.359538, -0.00573733]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Visual/Body/ArmRight:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(40, 40), Vector2(-80, -120)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Visual/Body/Head:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-80, -160), Vector2(-80, -40)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("AnimationPlayer:speed_scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_6klrn"]
 _data = {
 "Idle": SubResource("Animation_ss7x4"),
 "Jump": SubResource("Animation_0rjy2"),
-"RESET": SubResource("Animation_do1q2")
+"RESET": SubResource("Animation_do1q2"),
+"Swim": SubResource("Animation_n0emh")
 }
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rj2v1"]
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 script = ExtResource("1_pvmcb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_d8vk6")
+
+[node name="Collider" type="Area2D" parent="." groups=["Hittable", "Player"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collider"]
+position = Vector2(-1, -5)
+rotation = -0.237478
+scale = Vector2(1.24, 1.21626)
+shape = SubResource("CapsuleShape2D_rj2v1")
 
 [node name="Visual" type="Node2D" parent="."]
 scale = Vector2(0.1, 0.1)
@@ -138,7 +270,6 @@ texture = ExtResource("2_nxkdv")
 
 [node name="Head" type="Sprite2D" parent="Visual/Body"]
 position = Vector2(-80, -160)
-scale = Vector2(1, 1)
 texture = ExtResource("3_kpw55")
 offset = Vector2(0, -360)
 
@@ -150,6 +281,19 @@ position = Vector2(-280, 40)
 texture = ExtResource("4_fcwmw")
 offset = Vector2(-36, -19.9999)
 
+[node name="Flashlight" type="Sprite2D" parent="Visual/Body/ArmLeft"]
+position = Vector2(-80, -40)
+scale = Vector2(2, 2)
+texture = ExtResource("5_ryqu1")
+offset = Vector2(-22.606, -43.909)
+
+[node name="PointLight2D" type="PointLight2D" parent="Visual/Body/ArmLeft/Flashlight"]
+position = Vector2(-63.4777, -30.3063)
+rotation = -2.15186
+texture = ExtResource("6_pl5va")
+offset = Vector2(3557.17, -132.076)
+texture_scale = 20.0
+
 [node name="ArmRight" type="Sprite2D" parent="Visual/Body"]
 light_mask = 2
 visibility_layer = 2
@@ -157,6 +301,15 @@ position = Vector2(40, 40)
 texture = ExtResource("4_fcwmw")
 offset = Vector2(44, 20)
 flip_h = true
+
+[node name="Gun" type="Sprite2D" parent="Visual/Body/ArmRight"]
+self_modulate = Color(0.435192, 0.435192, 0.435192, 1)
+position = Vector2(-80, -80)
+rotation = 0.406589
+texture = ExtResource("7_ht4fb")
+
+[node name="Spawner" type="Marker2D" parent="Visual/Body/ArmRight"]
+position = Vector2(-280, -200)
 
 [node name="LegLeft" type="Sprite2D" parent="Visual/Body"]
 position = Vector2(-200, 240)
@@ -169,25 +322,35 @@ position = Vector2(2.27374e-13, 240)
 texture = ExtResource("4_kkjqb")
 offset = Vector2(204, 188)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_d8vk6")
-
 [node name="Sfx" type="Node" parent="."]
+
+[node name="Bubble" type="AudioStreamPlayer" parent="Sfx"]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_6klrn")
 }
 autoplay = "Idle"
-speed_scale = 0.5
+speed_scale = 0.2
 
-[node name="Collider" type="Area2D" parent="." groups=["Player"]]
+[node name="BubbleParticles" type="CPUParticles2D" parent="."]
+position = Vector2(5, -9)
+emitting = false
+amount = 15
+one_shot = true
+explosiveness = 0.1
+randomness = 0.5
+texture = ExtResource("6_bltpl")
+emission_shape = 1
+emission_sphere_radius = 10.0
+gravity = Vector2(0, -300)
+scale_amount_min = 0.02
+scale_amount_max = 0.09
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Collider"]
-position = Vector2(-1, -5)
-rotation = -0.237478
-scale = Vector2(1.24, 1.21626)
-shape = SubResource("CapsuleShape2D_rj2v1")
+[node name="BubbleTimer" type="Timer" parent="."]
+wait_time = 4.0
+autostart = true
 
 [connection signal="area_entered" from="Collider" to="." method="_on_collider_area_entered"]
 [connection signal="area_exited" from="Collider" to="." method="_on_collider_area_exited"]
+[connection signal="timeout" from="BubbleTimer" to="." method="_on_bubble_timer_timeout"]

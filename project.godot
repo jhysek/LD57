@@ -30,6 +30,8 @@ mouse_cursor/tooltip_position_offset=Vector2(0, 0)
 
 Player="Anything that is attacked by enemies"
 Enemy=""
+Hittable=""
+Base=""
 
 [input]
 

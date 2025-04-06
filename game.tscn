@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=4 uid="uid://b0fy4doifqk7s"]
+[gd_scene load_steps=37 format=4 uid="uid://b0fy4doifqk7s"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_ksdip"]
 [ext_resource type="PackedScene" uid="uid://dd5r65nviv8nj" path="res://Components/Player/player.tscn" id="1_lenhx"]
@@ -25,6 +25,7 @@
 [ext_resource type="PackedScene" uid="uid://c6bin6jvgfxgr" path="res://Components/ResourceIndicator/resource_indicator.tscn" id="20_cy7rb"]
 [ext_resource type="PackedScene" uid="uid://bdqkxrciqdjvg" path="res://Components/Indicators/indicators.tscn" id="21_bcowr"]
 [ext_resource type="Theme" uid="uid://cqse0wqxp422d" path="res://Assets/theme.tres" id="23_od7k7"]
+[ext_resource type="PackedScene" uid="uid://bn2p2qitahjpt" path="res://Components/Enemy/enemy.tscn" id="26_u6b0e"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_i2dlu"]
 shader = ExtResource("8_6oy4w")
@@ -165,10 +166,11 @@ position = Vector2(467, 44)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_xb8kj")
 
-[node name="Player" parent="." node_paths=PackedStringArray("map") instance=ExtResource("1_lenhx")]
+[node name="Player" parent="." node_paths=PackedStringArray("game", "map") instance=ExtResource("1_lenhx")]
 light_mask = 2
 visibility_layer = 2
 position = Vector2(-40, -32)
+game = NodePath("..")
 map = NodePath("../Map")
 behaviors = Array[ExtResource("3_s4iir")]([SubResource("Resource_elrfv"), SubResource("Resource_kcr7i"), SubResource("Resource_jet5w"), SubResource("Resource_klwba")])
 
@@ -177,7 +179,7 @@ remote_path = NodePath("../../Camera2D")
 update_rotation = false
 update_scale = false
 
-[node name="Base" parent="." instance=ExtResource("12_6e4ra")]
+[node name="Base" parent="." groups=["Base"] instance=ExtResource("12_6e4ra")]
 position = Vector2(-108, -19)
 rotation = -0.12704
 scale = Vector2(0.25, 0.25)
@@ -317,6 +319,9 @@ polygon = PackedVector2Array(-953, 206, -948, -464, 1239, -452, 1228, 716, 1332,
 environment = SubResource("Environment_nssff")
 
 [node name="Upgrades" type="Node2D" parent="."]
+
+[node name="Enemy" parent="." instance=ExtResource("26_u6b0e")]
+position = Vector2(467, 1)
 
 [connection signal="oxygen_level_changed" from="Player" to="." method="_on_player_oxygen_level_changed"]
 [connection signal="pressed" from="UI/Upgrades/Button" to="." method="_on_button_pressed"]

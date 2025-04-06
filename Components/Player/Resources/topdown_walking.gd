@@ -19,5 +19,14 @@ func on_process(delta):
 	if direction.length() > 1.0:
 		direction = direction.normalized()
 
+	if direction == Vector2.ZERO:
+		character.idle()
+	else:
+		character.swim()
+		if direction.x > 0:
+			character.flip(true)
+		else:
+			character.flip(false)
+
 	character.velocity = delta * SPEED * direction
 	character.move_and_slide()

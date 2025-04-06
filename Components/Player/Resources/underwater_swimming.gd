@@ -13,7 +13,7 @@ func on_ready(parent):
 	assert(movement)
 
 	cam = character.get_viewport().get_camera_2d()
-	arm_light = character.get_node("Visual/Body/ArmRight")
+	arm_light = character.get_node("Visual/Body/ArmLeft/Flashlight")
 
 func on_physics_process(delta):
 	if !enabled:
@@ -27,6 +27,7 @@ func on_physics_process(delta):
 
 	var mouse_pos = cam.get_global_mouse_position()
 	arm_light.look_at(mouse_pos)
+	arm_light.rotation += PI/1.5
 
 	var angle = (target - character.global_position).angle() + PI / 2
 	character.global_rotation = lerp_angle(character.global_rotation, angle, delta * 3)

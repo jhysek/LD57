@@ -63,6 +63,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="Iridium" type="Label" parent="Price"]
+layout_mode = 0
 offset_left = 223.0
 offset_top = 9.075
 offset_right = 282.0
@@ -71,6 +72,7 @@ scale = Vector2(0.8, 0.8)
 text = "10 "
 
 [node name="Crystal" type="Label" parent="Price"]
+layout_mode = 0
 offset_left = 285.0
 offset_top = 9.075
 offset_right = 344.0

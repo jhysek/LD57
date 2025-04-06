@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://exmhe0mqpoe4"]
+
+[ext_resource type="Script" path="res://Components/Bullet/bullet.gd" id="1_gygwc"]
+[ext_resource type="Texture2D" uid="uid://r6fj2hgyama8" path="res://Components/Bullet/bullet.png" id="1_m1g20"]
+[ext_resource type="Texture2D" uid="uid://cydpeygpb3xw2" path="res://Assets/light_ambient.png" id="3_rr6v4"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ua78x"]
+radius = 3.16228
+
+[node name="Bullet" type="Area2D"]
+script = ExtResource("1_gygwc")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+modulate = Color(0.293306, 1, 0.988324, 1)
+rotation = -1.55658
+scale = Vector2(0.08, 0.08)
+texture = ExtResource("1_m1g20")
+offset = Vector2(-34, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1)
+rotation = -1.42402
+shape = SubResource("CircleShape2D_ua78x")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+energy = 2.0
+texture = ExtResource("3_rr6v4")
+texture_scale = 0.5
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
