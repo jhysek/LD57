@@ -153,6 +153,7 @@ _data = {
 
 [node name="Fish1" type="Area2D" groups=["Enemy", "Hittable"]]
 script = ExtResource("1_vt2kg")
+hp = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_d15lw")

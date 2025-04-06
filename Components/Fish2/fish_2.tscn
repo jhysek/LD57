@@ -158,7 +158,7 @@ script = ExtResource("1_qnyhe")
 attack_speed = 2
 attack_damage = 2
 speed = 30
-hp = 10
+hp = 16
 
 [node name="Visual" type="Node2D" parent="."]
 position = Vector2(-44, 12)

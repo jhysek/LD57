@@ -20,9 +20,12 @@ var target = null
 var attack_cooldown = attack_speed
 var base
 var prev_state
+var game
 
 func _ready():
 	base = get_tree().get_nodes_in_group("Base")[0]
+	game = get_node("/root/Game")
+
 	$Health.max_value = hp
 	$Health.value = hp
 	$Health.hide()
@@ -65,6 +68,9 @@ func die():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	if game.paused:
+		return
+
 	if state == State.DEAD:
 		return
 
@@ -89,7 +95,7 @@ func _process(delta: float) -> void:
 
 func attack():
 	$AnimationPlayer.play("Attack")
-	if target && !target.dead:
+	if target:
 		target.hit(attack_damage)
 	else:
 		if state != State.ATTACKING_BASE:
@@ -97,6 +103,9 @@ func attack():
 
 func _on_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Player"):
+		# TODO
+		return
+		target = area
 		state = State.ATTACKING
 
 

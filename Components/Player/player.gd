@@ -13,6 +13,7 @@ var Bullet = preload("res://Components/Bullet/bullet.tscn")
 @export var map: TileMapLayer
 @export var hp = 30
 @export var inventory: Node2D
+@export var STATIC = false
 
 var onboard = true
 var parameters = {
@@ -28,6 +29,11 @@ var full_hp = hp
 
 func _ready():
 	super()
+	if STATIC:
+		state = State.STATIC
+		$Health.hide()
+		return
+
 	assert(animation, "AnimationPlayer is missing?!")
 	assert(map, "Please connect map to player")
 	assert(game, "Please assign game")
@@ -54,6 +60,9 @@ func heal(diff):
 		hp = full_hp
 		$Health.value = full_hp
 		$Health.hide()
+
+func restore_oxygen():
+	get_behavior_by_name("oxygen_tank").set_remains(1000)
 
 func hit(damage):
 	if state == State.DEAD:

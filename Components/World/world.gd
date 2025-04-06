@@ -23,6 +23,7 @@ const RESOURCE_CRYSTAL = 9
 const IRIDIUM_UNIT_HP = 5
 const CRYSTAL_UNIT_HP = 10
 
+@export var STATIC = false
 @export var WALKABLE_IDS = [-1]
 @export var RESOURCE_IDS = [RESOURCE_IRIDIUM, RESOURCE_CRYSTAL]
 
@@ -39,6 +40,9 @@ var resources = {
 var game
 
 func _ready() -> void:
+	if STATIC:
+		return
+
 	game = get_node("/root/Game")
 	tile_size = tile_set.tile_size.x
 

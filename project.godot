@@ -12,9 +12,15 @@ config_version=5
 
 config/name="Game Template"
 config/tags=PackedStringArray("hry", "template")
-run/main_scene="res://game.tscn"
+run/main_scene="res://Scenes/menu.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
+boot_splash/bg_color=Color(0, 0, 0, 1)
+boot_splash/image="res://splash.png"
 config/icon="res://icon.svg"
+
+[autoload]
+
+Transition="*res://Components/Transition/Transition.tscn"
 
 [display]
 
@@ -32,6 +38,7 @@ Player="Anything that is attacked by enemies"
 Enemy=""
 Hittable=""
 Base=""
+SpawnPoint=""
 
 [input]
 
@@ -80,3 +87,4 @@ ui_jump={
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(0, 0, 0, 1)

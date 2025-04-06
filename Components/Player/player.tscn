@@ -272,6 +272,8 @@ scale = Vector2(0.25, 0.25)
 texture = ExtResource("2_nxkdv")
 
 [node name="Head" type="Sprite2D" parent="Visual/Body"]
+light_mask = 2
+visibility_layer = 2
 position = Vector2(-80, -160)
 texture = ExtResource("3_kpw55")
 offset = Vector2(0, -360)
@@ -285,6 +287,8 @@ texture = ExtResource("4_fcwmw")
 offset = Vector2(-36, -19.9999)
 
 [node name="Flashlight" type="Sprite2D" parent="Visual/Body/ArmLeft"]
+light_mask = 2
+visibility_layer = 2
 position = Vector2(-80, -40)
 scale = Vector2(2, 2)
 texture = ExtResource("5_ryqu1")
@@ -315,12 +319,16 @@ texture = ExtResource("7_ht4fb")
 position = Vector2(-280, -200)
 
 [node name="LegLeft" type="Sprite2D" parent="Visual/Body"]
+light_mask = 2
+visibility_layer = 2
 position = Vector2(-200, 240)
 rotation = 0.633811
 texture = ExtResource("4_kkjqb")
 offset = Vector2(180, 180)
 
 [node name="LegRight" type="Sprite2D" parent="Visual/Body"]
+light_mask = 2
+visibility_layer = 2
 position = Vector2(2.27374e-13, 240)
 texture = ExtResource("4_kkjqb")
 offset = Vector2(204, 188)

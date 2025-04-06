@@ -1,6 +1,23 @@
-[gd_scene load_steps=2 format=3 uid="uid://boqnr7yv7lpxx"]
+[gd_scene load_steps=5 format=3 uid="uid://boqnr7yv7lpxx"]
 
 [ext_resource type="Script" path="res://Components/EnemyWaves/enemy_waves.gd" id="1_d3siv"]
+[ext_resource type="Theme" uid="uid://cqse0wqxp422d" path="res://Assets/theme.tres" id="2_bpgxh"]
+[ext_resource type="AudioStream" uid="uid://byf4xpqw580x7" path="res://Components/EnemyWaves/tick.wav" id="3_aflde"]
+[ext_resource type="AudioStream" uid="uid://dunl823a418q0" path="res://Components/DefenceDrone/detected.wav" id="4_075ae"]
 
 [node name="EnemyWaves" type="Node2D"]
 script = ExtResource("1_d3siv")
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+theme = ExtResource("2_bpgxh")
+text = "Next wave: 30s"
+
+[node name="Sfx" type="Node" parent="."]
+
+[node name="Tick" type="AudioStreamPlayer" parent="Sfx"]
+stream = ExtResource("3_aflde")
+
+[node name="Incoming" type="AudioStreamPlayer" parent="Sfx"]
+stream = ExtResource("4_075ae")

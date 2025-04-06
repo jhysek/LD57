@@ -21,8 +21,12 @@ func set_remains(new_value):
 	remains = new_value
 	if remains > CAPACITY:
 		remains = CAPACITY
+	character.emit_signal("oxygen_level_changed", remains)
 
 func on_process(delta):
+	if character.game.paused:
+		return
+
 	if oxygen_depleting:
 		remains -= delta
 		if remains <= 0:

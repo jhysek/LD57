@@ -14,7 +14,8 @@ func _process(delta: float) -> void:
 		if livespan <= 0:
 			queue_free()
 
-func fire(self_area, to, damage):
+func fire(self_area, to, _damage):
+	damage = _damage
 	fired_by = self_area
 	direction = to
 	$Sprite.rotation = atan2(direction.y, direction.x)

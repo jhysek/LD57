@@ -31,6 +31,9 @@ func init(_game, patrol_path):
 	$Health.hide()
 
 func _process(delta: float) -> void:
+	if game.paused:
+		return
+
 	if state == State.IDLE:
 		idle_handler(delta)
 		return
@@ -59,7 +62,7 @@ func die():
 func idle_handler(delta):
 	cooldown -= delta
 	if cooldown <= 0:
-		cooldown = 1
+		cooldown = randf_range(0.5, 1.5)
 		state = State.PATROLING
 		target = route[current_route_idx]
 		direction = position.direction_to(target)
@@ -88,18 +91,18 @@ func attacking_handler(delta):
 	cooldown -= delta
 
 	if cooldown <= 0:
-		cooldown = game.parameters.drone_attack_cooldown
+		cooldown = 5 - game.parameters.shoot_speed
 		shoot()
 
 func shoot():
 	var shots = 0
-	print(str(radar.get_overlapping_areas()))
+
 	for enemy in radar.get_overlapping_areas():
 		if enemy.is_in_group("Enemy"):
 			var bullet = Bullet.instantiate()
 			get_node("/root/Game").add_child(bullet)
 			bullet.position = global_position
-			bullet.fire(self, bullet.global_position.direction_to(enemy.global_position), game.parameters.drone_damage)
+			bullet.fire(self, bullet.global_position.direction_to(enemy.global_position), game.parameters.fire_damage)
 			$Sfx/Shoot.play()
 			shots += 1
 			if shots >= game.parameters.drone_max_shots:

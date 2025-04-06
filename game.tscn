@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=4 uid="uid://b0fy4doifqk7s"]
+[gd_scene load_steps=39 format=4 uid="uid://b0fy4doifqk7s"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_ksdip"]
 [ext_resource type="PackedScene" uid="uid://dd5r65nviv8nj" path="res://Components/Player/player.tscn" id="1_lenhx"]
@@ -22,10 +22,10 @@
 [ext_resource type="Script" path="res://Components/Player/Resources/underwater_oxygentank.gd" id="14_ual5w"]
 [ext_resource type="Texture2D" uid="uid://cydpeygpb3xw2" path="res://Assets/light_ambient.png" id="15_xjr2w"]
 [ext_resource type="PackedScene" uid="uid://boqnr7yv7lpxx" path="res://Components/EnemyWaves/enemy_waves.tscn" id="16_b1fc1"]
-[ext_resource type="PackedScene" uid="uid://c6bin6jvgfxgr" path="res://Components/ResourceIndicator/resource_indicator.tscn" id="20_cy7rb"]
 [ext_resource type="PackedScene" uid="uid://bdqkxrciqdjvg" path="res://Components/Indicators/indicators.tscn" id="21_bcowr"]
 [ext_resource type="Theme" uid="uid://cqse0wqxp422d" path="res://Assets/theme.tres" id="23_od7k7"]
-[ext_resource type="PackedScene" uid="uid://ceph1gshk8dji" path="res://Components/Fish2/fish_2.tscn" id="29_5014l"]
+[ext_resource type="AudioStream" uid="uid://dswbn30cnay0v" path="res://Components/ShopItem/click.wav" id="27_5qbdp"]
+[ext_resource type="AudioStream" uid="uid://bl71785xnoins" path="res://Assets/music.ogg" id="28_m6nfp"]
 [ext_resource type="PackedScene" uid="uid://bl2xfxrau7iq3" path="res://Components/Inventory/inventory.tscn" id="30_8stql"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_i2dlu"]
@@ -83,6 +83,9 @@ shader_parameter/NOISE_TEXTURE = SubResource("NoiseTexture2D_qdpe5")
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_i85ll"]
 blend_mode = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4f5bw"]
+bg_color = Color(0.0638, 0.09999, 0.11, 1)
 
 [sub_resource type="Environment" id="Environment_nssff"]
 background_mode = 3
@@ -182,7 +185,7 @@ update_rotation = false
 update_scale = false
 
 [node name="Base" parent="." groups=["Base"] instance=ExtResource("12_6e4ra")]
-position = Vector2(-108, -19)
+rotation = -0.12704
 scale = Vector2(0.25, 0.25)
 
 [node name="Water" type="ColorRect" parent="."]
@@ -236,8 +239,6 @@ scale = Vector2(0.25, 0.25)
 texture = ExtResource("7_a2a3n")
 stretch_mode = 1
 
-[node name="ResourceIndicator" parent="Map" instance=ExtResource("20_cy7rb")]
-
 [node name="UI" type="CanvasLayer" parent="."]
 
 [node name="Vignette" parent="UI" instance=ExtResource("8_tntwi")]
@@ -277,6 +278,73 @@ grow_vertical = 0
 [node name="Inventory" parent="UI/Control" instance=ExtResource("30_8stql")]
 position = Vector2(257, 2)
 
+[node name="Waves" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 40.0
+grow_horizontal = 2
+
+[node name="EnemyWaves" parent="UI/Waves" instance=ExtResource("16_b1fc1")]
+position = Vector2(-52, 18)
+
+[node name="Died" type="Panel" parent="UI"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -182.5
+offset_top = -138.5
+offset_right = 182.5
+offset_bottom = 138.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_4f5bw")
+
+[node name="Label" type="Label" parent="UI/Died"]
+layout_mode = 0
+offset_left = 2.5
+offset_top = 20.5
+offset_right = 362.5
+offset_bottom = 66.5
+theme = ExtResource("23_od7k7")
+text = "Died       miserably"
+horizontal_alignment = 1
+
+[node name="ToMenu" type="Button" parent="UI/Died"]
+layout_mode = 0
+offset_left = 52.5
+offset_top = 88.5
+offset_right = 315.5
+offset_bottom = 138.5
+theme = ExtResource("23_od7k7")
+text = "Back to menu ..."
+
+[node name="Revive" type="Button" parent="UI/Died"]
+layout_mode = 0
+offset_left = 48.5
+offset_top = 155.5
+offset_right = 310.5
+offset_bottom = 205.5
+theme = ExtResource("23_od7k7")
+text = "I don't want to die yet!"
+
+[node name="Label2" type="Label" parent="UI/Died"]
+self_modulate = Color(1, 1, 1, 0.494118)
+layout_mode = 0
+offset_left = 67.5
+offset_top = 208.5
+offset_right = 301.5
+offset_bottom = 266.5
+text = "I'll revive you... it's Ludum Dare after all"
+horizontal_alignment = 1
+autowrap_mode = 2
+
 [node name="PointLight2D" type="PointLight2D" parent="."]
 position = Vector2(-21, -307)
 scale = Vector2(1.43282, 1)
@@ -284,33 +352,31 @@ energy = 3.41
 texture = ExtResource("15_xjr2w")
 texture_scale = 1.2
 
-[node name="EnemyWaves" parent="." instance=ExtResource("16_b1fc1")]
-
 [node name="Enemies" type="Node2D" parent="."]
 
-[node name="Spawn1" type="Marker2D" parent="Enemies"]
-position = Vector2(1103, 15)
+[node name="Spawn1" type="Marker2D" parent="Enemies" groups=["SpawnPoint"]]
+position = Vector2(1311, 15)
 
-[node name="Spawn2" type="Marker2D" parent="Enemies"]
-position = Vector2(1090, -229)
+[node name="Spawn2" type="Marker2D" parent="Enemies" groups=["SpawnPoint"]]
+position = Vector2(1287, -218)
 
-[node name="Spawn3" type="Marker2D" parent="Enemies"]
-position = Vector2(770, -413)
+[node name="Spawn3" type="Marker2D" parent="Enemies" groups=["SpawnPoint"]]
+position = Vector2(928, -575)
 
-[node name="Spawn4" type="Marker2D" parent="Enemies"]
-position = Vector2(328, -443)
+[node name="Spawn4" type="Marker2D" parent="Enemies" groups=["SpawnPoint"]]
+position = Vector2(332, -592)
 
-[node name="Spawn5" type="Marker2D" parent="Enemies"]
-position = Vector2(-294, -445)
+[node name="Spawn5" type="Marker2D" parent="Enemies" groups=["SpawnPoint"]]
+position = Vector2(-346, -589)
 
-[node name="Spawn6" type="Marker2D" parent="Enemies"]
-position = Vector2(-698, -387)
+[node name="Spawn6" type="Marker2D" parent="Enemies" groups=["SpawnPoint"]]
+position = Vector2(-863, -582)
 
-[node name="Spawn7" type="Marker2D" parent="Enemies"]
-position = Vector2(-837, -175)
+[node name="Spawn7" type="Marker2D" parent="Enemies" groups=["SpawnPoint"]]
+position = Vector2(-1043, -286)
 
-[node name="Spawn08" type="Marker2D" parent="Enemies"]
-position = Vector2(-860, 11)
+[node name="Spawn8" type="Marker2D" parent="Enemies" groups=["SpawnPoint"]]
+position = Vector2(-1066, 10)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(-40, -32)
@@ -347,9 +413,19 @@ position = Vector2(129, -249)
 [node name="4" type="Marker2D" parent="PatrolRoute"]
 position = Vector2(-467, -89)
 
-[node name="Fish2" parent="." instance=ExtResource("29_5014l")]
-position = Vector2(592, -316)
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("28_m6nfp")
+autoplay = true
+
+[node name="Sfx" type="Node" parent="."]
+
+[node name="Click" type="AudioStreamPlayer" parent="Sfx"]
+stream = ExtResource("27_5qbdp")
 
 [connection signal="oxygen_level_changed" from="Player" to="." method="_on_player_oxygen_level_changed"]
+[connection signal="player_died" from="Player" to="." method="_on_player_player_died"]
+[connection signal="base_destroyed" from="Base" to="." method="_on_base_base_destroyed"]
 [connection signal="resource_mined" from="Map" to="." method="_on_map_resource_mined"]
 [connection signal="pressed" from="UI/Upgrades/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="UI/Died/ToMenu" to="." method="_on_to_menu_pressed"]
+[connection signal="pressed" from="UI/Died/Revive" to="." method="_on_revive_pressed"]

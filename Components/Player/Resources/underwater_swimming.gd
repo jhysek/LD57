@@ -19,6 +19,9 @@ func on_physics_process(delta):
 	if !enabled:
 		return
 
+	if character.game.paused:
+		return
+
 	var pos = character.position
 	var target = pos + (movement.direction * SPEED * delta)
 

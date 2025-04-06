@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://dk8e3p7xq0uc"]
+[gd_scene load_steps=9 format=3 uid="uid://dk8e3p7xq0uc"]
 
 [ext_resource type="Theme" uid="uid://cqse0wqxp422d" path="res://Assets/theme.tres" id="1_cx4om"]
 [ext_resource type="Texture2D" uid="uid://cio86tir2jdeo" path="res://Assets/iridium_piece.png" id="2_h2wfp"]
 [ext_resource type="Script" path="res://Components/ShopItem/item.gd" id="2_whjll"]
 [ext_resource type="Texture2D" uid="uid://dhvfu00ixvvq" path="res://Assets/crystal_piece.png" id="3_x7nui"]
+[ext_resource type="AudioStream" uid="uid://dswbn30cnay0v" path="res://Components/ShopItem/click.wav" id="5_o7n6k"]
 
 [sub_resource type="Animation" id="Animation_hx8w7"]
 resource_name = "No"
@@ -23,18 +24,6 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_awbc5"]
 length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Price:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-30, 0)]
-}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_hioo5"]
 _data = {
@@ -47,6 +36,7 @@ offset_right = 343.0
 offset_bottom = 40.0
 theme = ExtResource("1_cx4om")
 script = ExtResource("2_whjll")
+metadata/_edit_horizontal_guides_ = [26.0]
 
 [node name="Name" type="Label" parent="."]
 layout_mode = 0
@@ -59,31 +49,33 @@ text = "IRIDIUM  MINING  DRONE"
 
 [node name="Price" type="Control" parent="."]
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 5.0
+offset_top = -2.0
+offset_right = 45.0
+offset_bottom = 38.0
 
 [node name="Iridium" type="Label" parent="Price"]
 layout_mode = 0
-offset_left = 223.0
-offset_top = 9.075
-offset_right = 282.0
-offset_bottom = 36.075
+offset_left = 219.0
+offset_top = 9.0
+offset_right = 278.0
+offset_bottom = 36.0
 scale = Vector2(0.8, 0.8)
 text = "10 "
 
 [node name="Crystal" type="Label" parent="Price"]
 layout_mode = 0
-offset_left = 285.0
-offset_top = 9.075
-offset_right = 344.0
-offset_bottom = 36.075
+offset_left = 281.0
+offset_top = 9.0
+offset_right = 340.0
+offset_bottom = 36.0
 scale = Vector2(0.8, 0.8)
 text = "10 "
 
 [node name="IridiumIcon" type="Sprite2D" parent="Price"]
 light_mask = 2
 visibility_layer = 2
-position = Vector2(254, 21.075)
+position = Vector2(256, 21)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("2_h2wfp")
 
@@ -109,5 +101,10 @@ libraries = {
 "": SubResource("AnimationLibrary_hioo5")
 }
 speed_scale = 2.0
+
+[node name="Sfx" type="Node" parent="."]
+
+[node name="Click" type="AudioStreamPlayer" parent="Sfx"]
+stream = ExtResource("5_o7n6k")
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

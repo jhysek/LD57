@@ -14,6 +14,7 @@ var DefensiveBot = preload("res://Components/DefenceDrone/defensive_drone.tscn")
 var current_tile = null
 var paused = false
 var player_inventory = null
+var goals_left = 2
 
 var parameters = {
 	player_inventory_size = 3,
@@ -24,6 +25,7 @@ var parameters = {
 	oxygen_tank_seconds = oxygen_tank_seconds,
 	drill_damage = 1,
 	fire_damage = 1,
+	shoot_speed = 1,
 
 	drone_damage = 1,
 	drone_attack_cooldown = 2,
@@ -31,8 +33,8 @@ var parameters = {
 }
 
 var inventory = {
-	iridium = 100,
-	crystal = 50,
+	iridium = 1000,
+	crystal = 500,
 	oxygen = oxygen_tank_seconds
 }
 
@@ -40,11 +42,11 @@ var deals = [
 	{
 		title = "Oxygen   tank   size",
 		level = 0,
-		max_levels = 10,
+		max_levels = 20,
 		price_iridium = 10,
 		price_crystals = 0,
-		iridium_multiplier = 1.3,
-		crystal_multiplier = 1.5,
+		iridium_multiplier = 1.1,
+		crystal_multiplier = 1,
 		parameter_name = "oxygen_tank_seconds",
 		parameter_multiplier = 1.1,
 		node = null
@@ -56,8 +58,8 @@ var deals = [
 		max_levels = 10,
 		price_iridium = 10,
 		price_crystals = 0,
-		iridium_multiplier = 1.3,
-		crystal_multiplier = 1.5,
+		iridium_multiplier = 1.2,
+		crystal_multiplier = 1,
 		parameter_name = "player_inventory_size",
 		parameter_addition = 1,
 		node = null
@@ -76,9 +78,10 @@ var deals = [
 		node = null
 	},
 
-		{
+	{
 		title = "Weapon   damage",
 		level = 0,
+		max_levels = 10,
 		price_iridium = 20,
 		price_crystals = 5,
 		iridium_multiplier = 1.3,
@@ -89,12 +92,25 @@ var deals = [
 	},
 
 	{
+		title = "Drone  shooting  speed",
+		level = 0,
+		max_levels = 10,
+		price_iridium = 5,
+		price_crystals = 5,
+		iridium_multiplier = 1.25,
+		crystal_multiplier = 1.01,
+		parameter_name = "shoot_speed",
+		parameter_multiplier = 1.19,
+		node = null
+	},
+
+	{
 		title = "Iridium   mining   drone",
 		level = 0,
 		price_iridium = 20,
 		price_crystals = 0,
-		iridium_multiplier = 1.3,
-		crystal_multiplier = 1.5,
+		iridium_multiplier = 1.2,
+		crystal_multiplier = 1,
 		action = "iridium_bot",
 		node = null
 	},
@@ -104,8 +120,8 @@ var deals = [
 		level = 0,
 		price_iridium = 20,
 		price_crystals = 10,
-		iridium_multiplier = 1.3,
-		crystal_multiplier = 1.5,
+		iridium_multiplier = 1.2,
+		crystal_multiplier = 1.14,
 		action = "crystal_bot",
 		node = null
 	},
@@ -115,8 +131,8 @@ var deals = [
 		level = 0,
 		price_iridium = 20,
 		price_crystals = 5,
-		iridium_multiplier = 1.3,
-		crystal_multiplier = 1.5,
+		iridium_multiplier = 1.2,
+		crystal_multiplier = 1.3,
 		action = "defensive_bot",
 		node = null
 	},
@@ -126,18 +142,19 @@ var deals = [
 		level = 0,
 		price_iridium = 20,
 		price_crystals = 5,
-		iridium_multiplier = 1.3,
-		crystal_multiplier = 1.5,
+		iridium_multiplier = 1.1,
+		crystal_multiplier = 1.1,
 		parameter_name = "submarine_hp",
 		parameter_addition = 10,
 		node = null
 	},
 
 	{
-		title = "Fix   droplet   engine",
+		title = "GOAL 1:  Fix   engine",
 		level = 0,
-		price_iridium = 20,
-		price_crystals = 5,
+		max_levels = 1,
+		price_iridium = 200,
+		price_crystals = 100,
 		iridium_multiplier = 1.3,
 		crystal_multiplier = 1.5,
 		action = "goal_1",
@@ -145,10 +162,11 @@ var deals = [
 	},
 
 	{
-		title = "Fuel   for   escape",
+		title = "GOAL 2:   Fuel   for   escape",
 		level = 0,
-		price_iridium = 20,
-		price_crystals = 5,
+		max_levels = 1,
+		price_iridium = 0,
+		price_crystals = 100,
 		iridium_multiplier = 1.3,
 		crystal_multiplier = 1.5,
 		action = "goal_2",
@@ -157,6 +175,7 @@ var deals = [
 ]
 
 func _ready():
+	Transition.openScene()
 	assert(map, "Map has to be assigned!")
 	assert(indicator, "Indicator has to be assigned!")
 	assert(player, "Player has to be assigned!")
@@ -169,8 +188,8 @@ func _ready():
 
 	player_inventory = player.inventory
 
-	$Fish2.activate($Base)
 	initialize_deals()
+
 
 
 func update_inventory(resource, diff):
@@ -210,6 +229,8 @@ func purchase(deal):
 			if deal.has("parameter_addition"):
 				parameters[deal.parameter_name] += deal.parameter_addition
 
+				print(parameters[deal.parameter_name])
+
 			if deal.parameter_name == "player_inventory_size":
 				player_inventory.refresh()
 
@@ -224,8 +245,23 @@ func purchase(deal):
 				'defensive_bot':
 					deploy_defensive_bot()
 
+				'goal_1':
+					$Base.fix()
+					goals_left -= 1
+					if goals_left <= 0:
+						finished()
+
+				'goal_2':
+					$Base.fuel()
+					goals_left -= 1
+					if goals_left <= 0:
+						finished()
+
 		for d in deals:
 			d.node.update_deal_info()
+
+func finished():
+	Transition.switchTo("res://Scenes/Finished.tscn")
 
 func has_enough_resources(deal):
 	return inventory.iridium >= deal.price_iridium && inventory.crystal >= deal.price_crystals
@@ -285,6 +321,7 @@ func _on_player_oxygen_level_changed(new_value: float) -> void:
 
 
 func _on_button_pressed() -> void:
+	$Sfx/Click.play()
 	for deal in deals:
 		if paused:
 			deal.node.close()
@@ -294,3 +331,24 @@ func _on_button_pressed() -> void:
 
 func _on_map_resource_mined(type: Variant) -> void:
 	player_inventory.add(type)
+
+func _on_to_menu_pressed() -> void:
+	Transition.switchTo("res://Scenes/menu.tscn")
+
+func _on_revive_pressed() -> void:
+	$Base.heal($Base.full_hp)
+	player.heal(player.full_hp)
+	player.state = player.State.IDLE
+	paused = false
+	$UI/Died.hide()
+	$UI/Died.position = Vector2(-1000, -1000)
+
+func _on_player_player_died() -> void:
+	print("PLAYER DIED")
+	paused = true
+	$UI/Died.show()
+
+func _on_base_base_destroyed() -> void:
+	print("BASE DESTROYED")
+	paused = true
+	$UI/Died.show()

@@ -51,7 +51,7 @@ _data = {
 [sub_resource type="CircleShape2D" id="CircleShape2D_1erjq"]
 radius = 136.297
 
-[node name="DefensiveDrone" type="Area2D" groups=["Hittable", "Player"]]
+[node name="DefensiveDrone" type="Area2D" groups=["Player"]]
 script = ExtResource("1_58idk")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

@@ -51,6 +51,9 @@ func init(world_map, base_pos, resource):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	if game.paused:
+		return
+
 	if state == State.IDLE:
 		idle_handler(delta)
 		return

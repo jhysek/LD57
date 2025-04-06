@@ -8,6 +8,9 @@ func on_process(delta):
 	if character.state == character.State.DEAD:
 		return
 
+	if character.game.paused:
+		return
+
 	if !enabled:
 		return
 
