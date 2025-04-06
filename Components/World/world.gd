@@ -1,6 +1,7 @@
 extends TileMapLayer
 
 var Particles = preload("res://Components/World/particles.tscn")
+var ResourceIndicator = preload("res://Components/ResourceIndicator/resource_indicator.tscn")
 
 var tile_size = 16
 var map_size = Vector2(0,0)
@@ -47,7 +48,8 @@ func init_resources():
 		var capacity = randi_range(50,80)
 		resources.iridium[iridium] = {
 			remaining = capacity,
-			max = capacity
+			max = capacity,
+			indicator_node = null
 		}
 		resources.total_iridium += capacity
 
@@ -58,7 +60,8 @@ func init_resources():
 		var capacity = randi_range(20,30)
 		resources.crystal[crystal] = {
 			remaining = capacity,
-			max = capacity
+			max = capacity,
+			indicator_node = null
 		}
 		resources.total_crystal += capacity
 		if !neighbors_with_accessible(crystal):
@@ -70,6 +73,7 @@ func reveal_resource(digged_map_pos):
 	for iridium in resources.iridium:
 		if are_neighbors(digged_map_pos, iridium):
 			set_cell(iridium, RESOURCE_IRIDIUM, Vector2.ZERO)
+			# TODO: add indicator
 
 	for crystal in resources.crystal:
 		if are_neighbors(digged_map_pos, crystal):

@@ -208,7 +208,6 @@ position = Vector2(-498, 44)
 texture = ExtResource("7_pxdo4")
 
 [node name="Fog" parent="Map" instance=ExtResource("9_fcagp")]
-visible = false
 self_modulate = Color(1, 1, 1, 0.870588)
 show_behind_parent = true
 anchors_preset = 15
@@ -308,25 +307,6 @@ position_smoothing_enabled = true
 position_smoothing_speed = 2.0
 editor_draw_limits = true
 
-[node name="Panel" type="Panel" parent="."]
-visible = false
-offset_left = -30.0
-offset_top = -352.0
-offset_right = 475.0
-offset_bottom = 175.0
-
-[node name="TabBar" type="TabBar" parent="Panel"]
-layout_mode = 0
-offset_left = 16.0
-offset_top = 22.0
-offset_right = 492.0
-offset_bottom = 62.0
-current_tab = 0
-tab_count = 3
-tab_0/title = "Player upgrades"
-tab_1/title = "Technplogy"
-tab_2/title = "Defence"
-
 [node name="Boundaries" type="StaticBody2D" parent="."]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Boundaries"]
@@ -335,8 +315,6 @@ polygon = PackedVector2Array(-953, 206, -948, -464, 1239, -452, 1228, 716, 1332,
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_nssff")
-
-[node name="ResourceRock" type="CharacterBody2D" parent="."]
 
 [node name="Upgrades" type="Node2D" parent="."]
 

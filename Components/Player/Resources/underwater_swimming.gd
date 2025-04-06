@@ -13,7 +13,7 @@ func on_ready(parent):
 	assert(movement)
 
 	cam = character.get_viewport().get_camera_2d()
-	# arm_light = character.get_node("Visual/arm_right")
+	arm_light = character.get_node("Visual/Body/ArmRight")
 
 func on_physics_process(delta):
 	if !enabled:
@@ -25,8 +25,8 @@ func on_physics_process(delta):
 	if movement.direction == Vector2.ZERO:
 		target = pos - Vector2(0, 200)
 
-	#var mouse_pos = character.get_viewport().get_mouse_position() - character.get_viewport_rect().size / 2 + cam.global_position
-	#arm_light.look_at(mouse_pos)
+	var mouse_pos = cam.get_global_mouse_position()
+	arm_light.look_at(mouse_pos)
 
 	var angle = (target - character.global_position).angle() + PI / 2
 	character.global_rotation = lerp_angle(character.global_rotation, angle, delta * 3)

@@ -1,7 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://dd5r65nviv8nj"]
+[gd_scene load_steps=12 format=3 uid="uid://dd5r65nviv8nj"]
 
 [ext_resource type="Script" path="res://Components/Player/player.gd" id="1_pvmcb"]
-[ext_resource type="Texture2D" uid="uid://cffbs0ucgyc35" path="res://icon.svg" id="2_2712v"]
+[ext_resource type="Texture2D" uid="uid://cxtub2kyacy3d" path="res://Components/Player/body.png" id="2_nxkdv"]
+[ext_resource type="Texture2D" uid="uid://cvp6lr7h0nwxh" path="res://Components/Player/head.png" id="3_kpw55"]
+[ext_resource type="Texture2D" uid="uid://d1xkye0gmp4s5" path="res://Components/Player/hand.png" id="4_fcwmw"]
+[ext_resource type="Texture2D" uid="uid://ct7uo2yudy5f6" path="res://Components/Player/leg.png" id="4_kkjqb"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_d8vk6"]
 radius = 16.5076
@@ -9,24 +12,162 @@ radius = 16.5076
 [sub_resource type="Animation" id="Animation_0rjy2"]
 resource_name = "Jump"
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_6klrn"]
-_data = {
-"Jump": SubResource("Animation_0rjy2")
+[sub_resource type="Animation" id="Animation_ss7x4"]
+resource_name = "Idle"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visual/Body/LegLeft:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.558333, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(0.75, 0.6), Vector2(1, 1), Vector2(1.2, 0.9)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visual/Body/LegRight:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.558333, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.2, 0.9), Vector2(1, 1), Vector2(1, 0.6)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Visual/Body/ArmLeft:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 0.272798]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Visual/Body/ArmRight:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, -0.336674]
 }
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_m218a"]
-radius = 21.0
+[sub_resource type="Animation" id="Animation_do1q2"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visual/Body/LegLeft:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visual/Body/LegRight:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Visual/Body/ArmLeft:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Visual/Body/ArmRight:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6klrn"]
+_data = {
+"Idle": SubResource("Animation_ss7x4"),
+"Jump": SubResource("Animation_0rjy2"),
+"RESET": SubResource("Animation_do1q2")
+}
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rj2v1"]
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 script = ExtResource("1_pvmcb")
 
 [node name="Visual" type="Node2D" parent="."]
+scale = Vector2(0.1, 0.1)
 
-[node name="Sprite2D" type="Sprite2D" parent="Visual"]
+[node name="Body" type="Sprite2D" parent="Visual"]
 light_mask = 2
 visibility_layer = 2
 scale = Vector2(0.25, 0.25)
-texture = ExtResource("2_2712v")
+texture = ExtResource("2_nxkdv")
+
+[node name="Head" type="Sprite2D" parent="Visual/Body"]
+position = Vector2(-80, -160)
+scale = Vector2(1, 1)
+texture = ExtResource("3_kpw55")
+offset = Vector2(0, -360)
+
+[node name="ArmLeft" type="Sprite2D" parent="Visual/Body"]
+show_behind_parent = true
+light_mask = 2
+visibility_layer = 2
+position = Vector2(-280, 40)
+texture = ExtResource("4_fcwmw")
+offset = Vector2(-36, -19.9999)
+
+[node name="ArmRight" type="Sprite2D" parent="Visual/Body"]
+light_mask = 2
+visibility_layer = 2
+position = Vector2(40, 40)
+texture = ExtResource("4_fcwmw")
+offset = Vector2(44, 20)
+flip_h = true
+
+[node name="LegLeft" type="Sprite2D" parent="Visual/Body"]
+position = Vector2(-200, 240)
+rotation = 0.633811
+texture = ExtResource("4_kkjqb")
+offset = Vector2(180, 180)
+
+[node name="LegRight" type="Sprite2D" parent="Visual/Body"]
+position = Vector2(2.27374e-13, 240)
+texture = ExtResource("4_kkjqb")
+offset = Vector2(204, 188)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_d8vk6")
@@ -37,11 +178,16 @@ shape = SubResource("CircleShape2D_d8vk6")
 libraries = {
 "": SubResource("AnimationLibrary_6klrn")
 }
+autoplay = "Idle"
+speed_scale = 0.5
 
 [node name="Collider" type="Area2D" parent="." groups=["Player"]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Collider"]
-shape = SubResource("CircleShape2D_m218a")
+position = Vector2(-1, -5)
+rotation = -0.237478
+scale = Vector2(1.24, 1.21626)
+shape = SubResource("CapsuleShape2D_rj2v1")
 
 [connection signal="area_entered" from="Collider" to="." method="_on_collider_area_entered"]
 [connection signal="area_exited" from="Collider" to="." method="_on_collider_area_exited"]
