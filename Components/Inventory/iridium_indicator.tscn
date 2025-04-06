@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c5ybm3vkqta6h"]
+
+[ext_resource type="Texture2D" uid="uid://cio86tir2jdeo" path="res://Assets/iridium_piece.png" id="1_aovfl"]
+
+[node name="IridiumIndicator" type="Sprite2D"]
+texture = ExtResource("1_aovfl")

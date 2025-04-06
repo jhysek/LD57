@@ -9,16 +9,23 @@ enum State {
 }
 
 var hp = 20
-var cooldown = 5
+var cooldown = 1
 var state = State.INITIALIZING
 var game
+var route
+var current_route_idx = 0
+var target = null
+var direction
 
 @onready var radar = $Radar
+@onready var SPEED = 50
 
-func init(_game):
+func init(_game, patrol_path):
 	game = _game
+	route = patrol_path
 	if game:
 		state = State.IDLE
+
 	$Health.max_value = hp
 	$Health.value = hp
 	$Health.hide()
@@ -54,20 +61,28 @@ func idle_handler(delta):
 	if cooldown <= 0:
 		cooldown = 1
 		state = State.PATROLING
+		target = route[current_route_idx]
+		direction = position.direction_to(target)
 		for enemy in radar.get_overlapping_areas():
 			if enemy.is_in_group("Enemy"):
 				$Sfx/Detected.play()
 				state = State.ATTACKING
 
 func patroling_handler(delta):
-	cooldown -= delta
-	if cooldown <= 0:
-		cooldown = 1
-		state = State.PATROLING
-		for enemy in radar.get_overlapping_areas():
-			if enemy.is_in_group("Enemy"):
-				$Sfx/Detected.play()
-				state = State.ATTACKING
+	if !target:
+		target = route[current_route_idx]
+
+	if global_position.distance_to(target) <= 20:
+		current_route_idx = (current_route_idx + 1) % route.size()
+		target = route[current_route_idx]
+		direction = position.direction_to(target)
+	else:
+		position += direction * delta * SPEED
+
+	for enemy in radar.get_overlapping_areas():
+		if enemy.is_in_group("Enemy"):
+			$Sfx/Detected.play()
+			state = State.ATTACKING
 
 func attacking_handler(delta):
 	cooldown -= delta

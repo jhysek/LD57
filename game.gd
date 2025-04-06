@@ -9,11 +9,15 @@ extends Node2D
 
 var ShopItem = preload("res://Components/ShopItem/item.tscn")
 var MiningBot = preload("res://Components/MiningDrone/mining_drone.tscn")
+var DefensiveBot = preload("res://Components/DefenceDrone/defensive_drone.tscn")
 
 var current_tile = null
 var paused = false
+var player_inventory = null
 
 var parameters = {
+	player_inventory_size = 3,
+
 	iridium_bots_carry = 1,
 	crystal_bots_carry = 1,
 
@@ -27,14 +31,14 @@ var parameters = {
 }
 
 var inventory = {
-	iridium = 10,
-	crystal = 5,
+	iridium = 100,
+	crystal = 50,
 	oxygen = oxygen_tank_seconds
 }
 
 var deals = [
 	{
-		title = "Oxygen   tank",
+		title = "Oxygen   tank   size",
 		level = 0,
 		max_levels = 10,
 		price_iridium = 10,
@@ -47,7 +51,20 @@ var deals = [
 	},
 
 	{
-		title = "Drills",
+		title = "Backpack   size",
+		level = 3,
+		max_levels = 10,
+		price_iridium = 10,
+		price_crystals = 0,
+		iridium_multiplier = 1.3,
+		crystal_multiplier = 1.5,
+		parameter_name = "player_inventory_size",
+		parameter_addition = 1,
+		node = null
+	},
+
+	{
+		title = "Drill   efficiency",
 		level = 0,
 		max_levels = 10,
 		price_iridium = 20,
@@ -60,7 +77,7 @@ var deals = [
 	},
 
 		{
-		title = "Weapon",
+		title = "Weapon   damage",
 		level = 0,
 		price_iridium = 20,
 		price_crystals = 5,
@@ -86,7 +103,7 @@ var deals = [
 		title = "Crystal   mining   drone",
 		level = 0,
 		price_iridium = 20,
-		price_crystals = 5,
+		price_crystals = 10,
 		iridium_multiplier = 1.3,
 		crystal_multiplier = 1.5,
 		action = "crystal_bot",
@@ -150,23 +167,9 @@ func _ready():
 	$UI/Indicators.update_crystals(inventory.crystal)
 	$UI/Indicators.update_iridium(inventory.iridium)
 
-	#$Fish1.activate($Base)
-	#$Fish2.activate($Base)
-	#$Fish3.activate($Base)
-	#$Fish4.activate($Base)
-	#$Fish5.activate($Base)
-	#$Fish6.activate($Base)
+	player_inventory = player.inventory
 
-	$MiningDrone.init(map, $Base.global_position, "iridium")
-	$MiningDrone.resource_offloaded.connect(func(amount):
-		update_inventory($MiningDrone.type, parameters.iridium_bots_carry)
-		)
-	$MiningDrone2.init(map, $Base.global_position, "crystal")
-	$MiningDrone2.resource_offloaded.connect(func(amount):
-		update_inventory($MiningDrone2.type, parameters.crystal_bots_carry)
-		)
-	$DefensiveDrone.init(self)
-
+	$Fish2.activate($Base)
 	initialize_deals()
 
 
@@ -195,24 +198,31 @@ func purchase(deal):
 		$UI/Indicators.update_crystals(inventory.crystal)
 		$UI/Indicators.update_iridium(inventory.iridium)
 		deal.level += 1
-		deal.price_iridium *= deal.iridium_multiplier
-		deal.price_crystals *= deal.crystal_multiplier
+		deal.price_iridium = round(deal.price_iridium * deal.iridium_multiplier)
+		deal.price_crystals = round(deal.price_crystals * deal.crystal_multiplier)
 
 		if deal.has("parameter_name"):
 			assert(parameters.has(deal.parameter_name), "Parameters don't have '" + deal.parameter_name + "' refered by a deal.")
 			if deal.has("parameter_multiplier"):
 				parameters[deal.parameter_name] *= deal.parameter_multiplier
+				parameters[deal.parameter_name] = round(parameters[deal.parameter_name])
+
 			if deal.has("parameter_addition"):
 				parameters[deal.parameter_name] += deal.parameter_addition
+
+			if deal.parameter_name == "player_inventory_size":
+				player_inventory.refresh()
 
 		if deal.has("action"):
 			match deal.action:
 				'iridium_bot':
-					deploy_iridium_bot()
+					deploy_mining_bot("iridium")
+
 				'crystal_bot':
-					print("Deploying CRYSTAL BOT")
+					deploy_mining_bot("crystal")
+
 				'defensive_bot':
-					print("Deploying DEFENSIVE BOT")
+					deploy_defensive_bot()
 
 		for d in deals:
 			d.node.update_deal_info()
@@ -220,11 +230,13 @@ func purchase(deal):
 func has_enough_resources(deal):
 	return inventory.iridium >= deal.price_iridium && inventory.crystal >= deal.price_crystals
 
-func deploy_iridium_bot():
+func deploy_mining_bot(type):
+	print("DEPLOYING bot for " + type)
 	var miner = MiningBot.instantiate()
 	miner.position = $Base.position
 	add_child(miner)
-	miner.init(map, $Base.position)
+	miner.init(map, $Base.position, type)
+
 	miner.resource_offloaded.connect(func(type):
 		print("RESOURCE OFFLOADED: " + type)
 		if type == "iridium":
@@ -232,6 +244,14 @@ func deploy_iridium_bot():
 		if type == "crystal":
 			update_inventory(type, parameters.crystal_bots_carry)
 		)
+
+func deploy_defensive_bot():
+	print("instantiating")
+	var bot = DefensiveBot.instantiate()
+	bot.position = $Base.global_position - Vector2(0, 80)
+	add_child(bot)
+	var route = $PatrolRoute.get_children().map(func(marker): return marker.global_position)
+	bot.init(self, route)
 
 func _input(event):
 	if paused:
@@ -271,3 +291,6 @@ func _on_button_pressed() -> void:
 		else:
 			deal.node.open()
 	paused = !paused
+
+func _on_map_resource_mined(type: Variant) -> void:
+	player_inventory.add(type)

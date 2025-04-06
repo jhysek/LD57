@@ -135,7 +135,7 @@ func mining_handler(delta):
 		$Sfx/Dig.play()
 		resources += 1
 		cooldown = IRIDIUM_UNIT_HP / game.parameters.drill_damage
-		map.decrease_resource_amount(type, digging_at)
+		map.decrease_resource_amount(type, digging_at, 1)
 
 		if resources >= game.parameters.iridium_bots_carry:
 			print("FULL, returning back to base")

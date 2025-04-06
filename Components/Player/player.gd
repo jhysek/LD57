@@ -6,12 +6,13 @@ signal player_died
 
 var Bullet = preload("res://Components/Bullet/bullet.tscn")
 
+
 @onready var animation = $AnimationPlayer
 @onready var visual = $Visual
 @export var game: Node2D
 @export var map: TileMapLayer
-@export var hp = 20
-
+@export var hp = 30
+@export var inventory: Node2D
 
 var onboard = true
 var parameters = {
@@ -23,12 +24,14 @@ var parameters = {
 
 var backpack = []
 var movement
+var full_hp = hp
 
 func _ready():
 	super()
 	assert(animation, "AnimationPlayer is missing?!")
 	assert(map, "Please connect map to player")
 	assert(game, "Please assign game")
+	assert(inventory, "Please assign inventory")
 	$Health.max_value = hp
 	$Health.value = hp
 	$Health.hide()
@@ -37,6 +40,20 @@ func upgrade_parameter(parameter_name, new_value):
 	if parameter_name == "oxygen_tank_seconds":
 		parameters.oxygen_tank_seconds = new_value
 		get_behavior_by_name('oxygen_tank').update_oxygen_tank_secods(new_value)
+
+# empty players inventory to overal resources inventory
+func store_inventory():
+	var resources = inventory.pop()
+	for resource in resources:
+		game.update_inventory(resource, 1)
+
+func heal(diff):
+	hp += diff
+	$Health.value = round(hp)
+	if hp >= full_hp:
+		hp = full_hp
+		$Health.value = full_hp
+		$Health.hide()
 
 func hit(damage):
 	if state == State.DEAD:

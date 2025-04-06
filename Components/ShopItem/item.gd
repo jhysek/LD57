@@ -14,7 +14,7 @@ func init(_game, _deal_idx):
 
 func update_deal_info():
 	var deal = game.deals[deal_idx]
-	$Name.text = deal.title + "     lvl.   " + str(deal.level + 1)
+	$Name.text = deal.title + "     " + str(deal.level + 1)
 	if deal.has("max_levels"):
 		$Name.text += "   /   " + str(deal.max_levels)
 	$Price/Iridium.text = str(deal.price_iridium)
@@ -24,10 +24,12 @@ func update_deal_info():
 		$Price/Crystal.show()
 		$Price/CrystalIcon.show()
 	else:
-
 		$Price/Crystal.hide()
 		$Price/CrystalIcon.hide()
-
+	if game.has_enough_resources(deal):
+		$Name.modulate = Color(1,1,1,1)
+	else:
+		$Name.modulate = Color(1,1,1,0.3)
 
 func open():
 	var deal = game.deals[deal_idx]

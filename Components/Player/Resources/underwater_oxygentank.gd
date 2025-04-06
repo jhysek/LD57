@@ -34,4 +34,6 @@ func on_process(delta):
 		remains += delta * 5
 		if remains > CAPACITY:
 			remains = CAPACITY
+		# Heal player
+		character.heal(delta)
 		character.emit_signal("oxygen_level_changed", remains)

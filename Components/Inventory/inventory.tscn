@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://bl2xfxrau7iq3"]
+
+[ext_resource type="Script" path="res://Components/Inventory/inventory.gd" id="1_aau4o"]
+[ext_resource type="Theme" uid="uid://cqse0wqxp422d" path="res://Assets/theme.tres" id="2_ie2af"]
+
+[node name="Inventory" type="Node2D"]
+position = Vector2(226, 2)
+script = ExtResource("1_aau4o")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -226.0
+offset_top = -16.0
+offset_right = -95.0
+offset_bottom = 11.0
+theme = ExtResource("2_ie2af")
+text = "backpack    0 / 3"
+
+[node name="Indicators" type="Node2D" parent="."]
+position = Vector2(-42, 0)

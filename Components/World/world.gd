@@ -3,6 +3,8 @@ extends TileMapLayer
 var Particles = preload("res://Components/World/particles.tscn")
 var ResourceIndicator = preload("res://Components/ResourceIndicator/resource_indicator.tscn")
 
+signal resource_mined(type)
+
 var tile_size = 16
 var map_size = Vector2(0,0)
 var nav: AStar2D
@@ -18,6 +20,9 @@ const CELL_UNBREAKABLE = 6
 const RESOURCE_IRIDIUM = 8
 const RESOURCE_CRYSTAL = 9
 
+const IRIDIUM_UNIT_HP = 5
+const CRYSTAL_UNIT_HP = 10
+
 @export var WALKABLE_IDS = [-1]
 @export var RESOURCE_IDS = [RESOURCE_IRIDIUM, RESOURCE_CRYSTAL]
 
@@ -31,7 +36,10 @@ var resources = {
 	total_crystal = 0
 }
 
+var game
+
 func _ready() -> void:
+	game = get_node("/root/Game")
 	tile_size = tile_set.tile_size.x
 
 	var rect = get_used_rect()
@@ -45,7 +53,10 @@ func _ready() -> void:
 
 func init_resources():
 	for iridium in get_used_cells_by_id(RESOURCE_IRIDIUM):
-		var capacity = randi_range(50,80)
+		if iridium == Vector2i(0,3):
+			print("GOT 0.3!")
+
+		var capacity = randi_range(20,40)
 		resources.iridium[iridium] = {
 			remaining = capacity,
 			max = capacity,
@@ -55,9 +66,11 @@ func init_resources():
 
 		if !neighbors_with_accessible(iridium):
 			set_cell(iridium, CELL_DIRT_1, Vector2.ZERO)
+		else:
+			add_indicator(iridium, "iridium")
 
 	for crystal in get_used_cells_by_id(RESOURCE_CRYSTAL):
-		var capacity = randi_range(20,30)
+		var capacity = randi_range(10,25)
 		resources.crystal[crystal] = {
 			remaining = capacity,
 			max = capacity,
@@ -66,6 +79,8 @@ func init_resources():
 		resources.total_crystal += capacity
 		if !neighbors_with_accessible(crystal):
 			set_cell(crystal, CELL_DIRT_1, Vector2.ZERO)
+		else:
+			add_indicator(crystal, "crystal")
 
 	print("TOTAL RESOURCES: " + str(resources.total_iridium) + " / " + str(resources.total_crystal))
 
@@ -73,20 +88,37 @@ func reveal_resource(digged_map_pos):
 	for iridium in resources.iridium:
 		if are_neighbors(digged_map_pos, iridium):
 			set_cell(iridium, RESOURCE_IRIDIUM, Vector2.ZERO)
-			# TODO: add indicator
+			add_indicator(iridium, "iridium")
 
 	for crystal in resources.crystal:
 		if are_neighbors(digged_map_pos, crystal):
 			set_cell(crystal, RESOURCE_CRYSTAL, Vector2.ZERO)
+			add_indicator(crystal, "crystal")
 
-func decrease_resource_amount(type, map_pos, by_amount):
-	if type == "iridium" and resources.iridium.has(map_pos):
-		resources.iridium[map_pos].remaining -= by_amount
-		if resources.iridium[map_pos].indicator_node:
-			resources.iridium[map_pos].indicator_node.update_amount(resources.iridium[map_pos].remaining)
+func add_indicator(map_pos, type):
+	if resources[type][map_pos].indicator_node == null:
+		var indicator = ResourceIndicator.instantiate()
+		indicator.global_position = map_to_world(map_pos) - Vector2(20,0)
+		indicator.init(resources[type][map_pos].max, resources[type][map_pos].max)
+		resources[type][map_pos].indicator_node = indicator
+		add_child(indicator)
 
-		if resources.iridium[map_pos].remaining <= 0:
+func decrease_resource_amount(type, map_pos, by_amount = 1):
+	if type != "iridium" && type != "crystal":
+		return
+
+	map_pos = Vector2i(map_pos)
+	if resources[type].has(map_pos):
+		resources[type][map_pos].remaining -= by_amount
+		if resources[type][map_pos].indicator_node:
+			resources[type][map_pos].indicator_node.update_amount(resources[type][map_pos].remaining)
+			if resources[type][map_pos].remaining <= 0:
+				resources[type][map_pos].indicator_node = null
+
+		if resources[type][map_pos].remaining <= 0:
 			set_cell(map_pos, CELL_EMPTY, Vector2.ZERO)
+	else:
+		print("No " + type + " at " + str(map_pos))
 
 func is_breakable(map_pos: Vector2):
 	var cell_id = get_cell(map_pos)
@@ -96,13 +128,36 @@ func hit(map_pos: Vector2, hp: int):
 	if !is_breakable(map_pos):
 		return
 
-	if !states.has(map_pos):
-		states[map_pos] = tile_hitpoints
-
 	dig_effect(map_pos)
 
+	if get_cell(map_pos) == RESOURCE_CRYSTAL or get_cell(map_pos) == RESOURCE_IRIDIUM:
+		handle_mining(map_pos, hp)
+	else:
+		if !states.has(map_pos):
+			states[map_pos] = tile_hitpoints
+
+		states[map_pos] -= hp
+		update_tile_state(map_pos)
+
+func handle_mining(map_pos, hp = 1):
+	var type = "iridium"
+	if get_cell(map_pos) == RESOURCE_CRYSTAL:
+		type = "crystal"
+
+	print("?" + str(resources.iridium.has(map_pos)))
+
+	if !states.has(map_pos) or states[map_pos] <= 0:
+		if get_cell(map_pos) == RESOURCE_CRYSTAL:
+			states[map_pos] = CRYSTAL_UNIT_HP
+		if get_cell(map_pos) == RESOURCE_IRIDIUM:
+			states[map_pos] = IRIDIUM_UNIT_HP
+
 	states[map_pos] -= hp
-	update_tile_state(map_pos)
+	if states[map_pos] <= 0:
+		if !game.player_inventory.full():
+			print("DECREASING RESOURCE AMOUNT")
+			decrease_resource_amount(type, map_pos, 1)
+			emit_signal("resource_mined", type)
 
 func dig_effect(map_pos):
 	var particles = Particles.instantiate()

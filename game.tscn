@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=4 uid="uid://b0fy4doifqk7s"]
+[gd_scene load_steps=38 format=4 uid="uid://b0fy4doifqk7s"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_ksdip"]
 [ext_resource type="PackedScene" uid="uid://dd5r65nviv8nj" path="res://Components/Player/player.tscn" id="1_lenhx"]
@@ -25,10 +25,8 @@
 [ext_resource type="PackedScene" uid="uid://c6bin6jvgfxgr" path="res://Components/ResourceIndicator/resource_indicator.tscn" id="20_cy7rb"]
 [ext_resource type="PackedScene" uid="uid://bdqkxrciqdjvg" path="res://Components/Indicators/indicators.tscn" id="21_bcowr"]
 [ext_resource type="Theme" uid="uid://cqse0wqxp422d" path="res://Assets/theme.tres" id="23_od7k7"]
-[ext_resource type="PackedScene" uid="uid://c143ay6eb7bi4" path="res://Components/Fish1/enemy.tscn" id="26_i5d06"]
-[ext_resource type="PackedScene" uid="uid://c3gmqx7x8da18" path="res://Components/MiningDrone/mining_drone.tscn" id="27_ucgru"]
-[ext_resource type="PackedScene" uid="uid://03cx31yjuqkv" path="res://Components/DefenceDrone/defensive_drone.tscn" id="28_p10o1"]
 [ext_resource type="PackedScene" uid="uid://ceph1gshk8dji" path="res://Components/Fish2/fish_2.tscn" id="29_5014l"]
+[ext_resource type="PackedScene" uid="uid://bl2xfxrau7iq3" path="res://Components/Inventory/inventory.tscn" id="30_8stql"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_i2dlu"]
 shader = ExtResource("8_6oy4w")
@@ -169,12 +167,13 @@ position = Vector2(467, 44)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_xb8kj")
 
-[node name="Player" parent="." node_paths=PackedStringArray("game", "map") instance=ExtResource("1_lenhx")]
+[node name="Player" parent="." node_paths=PackedStringArray("game", "map", "inventory") instance=ExtResource("1_lenhx")]
 light_mask = 2
 visibility_layer = 2
 position = Vector2(-40, -32)
 game = NodePath("..")
 map = NodePath("../Map")
+inventory = NodePath("../UI/Control/Inventory")
 behaviors = Array[ExtResource("3_s4iir")]([SubResource("Resource_elrfv"), SubResource("Resource_kcr7i"), SubResource("Resource_jet5w"), SubResource("Resource_klwba")])
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="Player"]
@@ -259,12 +258,24 @@ grow_horizontal = 0
 
 [node name="Button" type="Button" parent="UI/Upgrades"]
 layout_mode = 0
-offset_left = 182.0
-offset_top = -59.0
-offset_right = 355.0
-offset_bottom = -20.0
+offset_left = 123.0
+offset_top = -81.0
+offset_right = 296.0
+offset_bottom = -42.0
 theme = ExtResource("23_od7k7")
 text = "UPGRADES"
+
+[node name="Control" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_right = 40.0
+grow_vertical = 0
+
+[node name="Inventory" parent="UI/Control" instance=ExtResource("30_8stql")]
+position = Vector2(257, 2)
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 position = Vector2(-21, -307)
@@ -322,33 +333,23 @@ environment = SubResource("Environment_nssff")
 
 [node name="Upgrades" type="Node2D" parent="."]
 
-[node name="Fish1" parent="." instance=ExtResource("26_i5d06")]
-position = Vector2(269, -215)
+[node name="PatrolRoute" type="Node2D" parent="."]
 
-[node name="Fish2" parent="." instance=ExtResource("26_i5d06")]
-position = Vector2(-16, -302)
+[node name="1" type="Marker2D" parent="PatrolRoute"]
+position = Vector2(-268, -241)
 
-[node name="Fish3" parent="." instance=ExtResource("26_i5d06")]
-position = Vector2(-232, -310)
+[node name="2" type="Marker2D" parent="PatrolRoute"]
+position = Vector2(351, -98)
 
-[node name="Fish4" parent="." instance=ExtResource("26_i5d06")]
-position = Vector2(-417, -252)
+[node name="3" type="Marker2D" parent="PatrolRoute"]
+position = Vector2(129, -249)
 
-[node name="Fish5" parent="." instance=ExtResource("26_i5d06")]
-position = Vector2(-486, -108)
+[node name="4" type="Marker2D" parent="PatrolRoute"]
+position = Vector2(-467, -89)
 
-[node name="MiningDrone" parent="." instance=ExtResource("27_ucgru")]
-position = Vector2(-219, -149)
-
-[node name="MiningDrone2" parent="." instance=ExtResource("27_ucgru")]
-position = Vector2(110, -151)
-type = "crystal"
-
-[node name="DefensiveDrone" parent="." instance=ExtResource("28_p10o1")]
-position = Vector2(-92, -202)
-
-[node name="Fish6" parent="." instance=ExtResource("29_5014l")]
-position = Vector2(155, -315)
+[node name="Fish2" parent="." instance=ExtResource("29_5014l")]
+position = Vector2(592, -316)
 
 [connection signal="oxygen_level_changed" from="Player" to="." method="_on_player_oxygen_level_changed"]
+[connection signal="resource_mined" from="Map" to="." method="_on_map_resource_mined"]
 [connection signal="pressed" from="UI/Upgrades/Button" to="." method="_on_button_pressed"]
